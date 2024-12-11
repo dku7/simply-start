@@ -1,5 +1,11 @@
-function App() {
-  return <h1>pomodomoro</h1>;
-}
+import Heading from "./components/Heading";
+import Timer from "./components/Timer";
 
-export default App;
+export default function App() {
+  return (
+    <>
+      <Heading />
+      <Timer />
+    </>
+  );
+}
