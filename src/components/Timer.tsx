@@ -1,12 +1,16 @@
 import { useState, useEffect, useRef } from "react";
+import useSound from "use-sound";
 import Countdown from "./Countdown";
 import TimerButton from "./TimerButton";
+import defaultNotification from "../assets/default-notification.mp3";
 
 export default function Timer() {
   const [secondsLeft, setSecondsLeft] = useState<number>(10);
   const [countdownStarted, setCountdownStarted] = useState<boolean>(false);
   const [sessionType, setSessionType] = useState<string>("Work");
   const [numberOfWorkSession, setNumberOfWorkSessions] = useState<number>(0);
+  const [soundsEnabled, setSoundsEnabled] = useState<boolean>(true);
+
   const intervalRef = useRef<number>(-1);
 
   const handleStartCountdown = () => {
@@ -29,10 +33,17 @@ export default function Timer() {
     };
   }, [countdownStarted]);
 
+  const [playNotification] = useSound(defaultNotification);
+  const handleSoundsEnabled = () => {
+    setSoundsEnabled((enabled) => !enabled);
+  };
+
   useEffect(() => {
     if (!secondsLeft && countdownStarted) {
       clearInterval(intervalRef.current);
       setCountdownStarted(false);
+
+      if (soundsEnabled) playNotification();
 
       if (sessionType === "Work") {
         const updatedSessionCount = numberOfWorkSession + 1;
@@ -53,7 +64,14 @@ export default function Timer() {
         setSecondsLeft(10);
       }
     }
-  }, [countdownStarted, numberOfWorkSession, secondsLeft, sessionType]);
+  }, [
+    countdownStarted,
+    numberOfWorkSession,
+    playNotification,
+    secondsLeft,
+    sessionType,
+    soundsEnabled,
+  ]);
 
   return (
     <>
@@ -63,6 +81,16 @@ export default function Timer() {
       <Countdown secondsLeft={secondsLeft} />
       <TimerButton title={"Start"} handleCountdown={handleStartCountdown} />
       <TimerButton title={"Stop"} handleCountdown={handleStopCountdown} />
+      <div>
+        <input
+          type="checkbox"
+          name="enable-sounds"
+          id="enable-sounds"
+          checked={soundsEnabled}
+          onChange={handleSoundsEnabled}
+        />
+        <label htmlFor="enable-sounds">enable sounds</label>
+      </div>
       <p>Completed sessions: {numberOfWorkSession}</p>
     </>
   );
