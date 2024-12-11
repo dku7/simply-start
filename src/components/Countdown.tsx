@@ -5,23 +5,23 @@ interface CountdownProps {
 }
 
 export default function Countdown({ secondsLeft }: CountdownProps) {
-  const [min, setMin] = useState(0);
-  const [sec, setSec] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
 
   const formatTime = (timePart: number) =>
     timePart < 10 ? `0${timePart.toString()}` : timePart.toString();
 
   useEffect(() => {
-    const m = Math.floor(secondsLeft / 60);
-    const s = secondsLeft - m * 60;
+    const min = Math.floor(secondsLeft / 60);
+    const sec = secondsLeft - min * 60;
 
-    setMin(m);
-    setSec(s);
+    setMinutes(min);
+    setSeconds(sec);
   }, [secondsLeft]);
 
   return (
     <p>
-      <span>{formatTime(min)}</span>:<span>{formatTime(sec)}</span>
+      <span>{formatTime(minutes)}</span>:<span>{formatTime(seconds)}</span>
     </p>
   );
 }
