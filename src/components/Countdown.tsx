@@ -5,8 +5,8 @@ interface CountdownProps {
 }
 
 export default function Countdown({ secondsLeft }: CountdownProps) {
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
+  const [minutes, setMinutes] = useState<number>(0);
+  const [seconds, setSeconds] = useState<number>(0);
 
   const formatTime = (timePart: number) =>
     timePart < 10 ? `0${timePart.toString()}` : timePart.toString();
