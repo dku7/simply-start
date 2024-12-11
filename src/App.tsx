@@ -1,7 +1,11 @@
 import Heading from "./components/Heading";
+import Timer from "./components/Timer";
 
-function App() {
-  return <Heading />;
+export default function App() {
+  return (
+    <>
+      <Heading />
+      <Timer />
+    </>
+  );
 }
-
-export default App;
