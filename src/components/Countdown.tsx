@@ -20,8 +20,8 @@ export default function Countdown({ secondsLeft }: CountdownProps) {
   }, [secondsLeft]);
 
   return (
-    <p>
+    <div className="text-8xl font-extrabold">
       <span>{formatTime(minutes)}</span>:<span>{formatTime(seconds)}</span>
-    </p>
+    </div>
   );
 }

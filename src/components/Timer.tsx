@@ -76,12 +76,14 @@ export default function Timer() {
   return (
     <>
       <header>
-        <h2>{sessionType}</h2>
+        <h2 className="text-l font-bold">{sessionType}</h2>
       </header>
       <Countdown secondsLeft={secondsLeft} />
-      <TimerButton title={"Start"} handleCountdown={handleStartCountdown} />
-      <TimerButton title={"Stop"} handleCountdown={handleStopCountdown} />
-      <div>
+      <div className="my-4">
+        <TimerButton title={"Start"} handleCountdown={handleStartCountdown} />
+        <TimerButton title={"Stop"} handleCountdown={handleStopCountdown} />
+      </div>
+      <div className="mb-2">
         <input
           type="checkbox"
           name="enable-sounds"
@@ -89,7 +91,9 @@ export default function Timer() {
           checked={soundsEnabled}
           onChange={handleSoundsEnabled}
         />
-        <label htmlFor="enable-sounds">enable sounds</label>
+        <label className="ml-2" htmlFor="enable-sounds">
+          enable sounds
+        </label>
       </div>
       <p>Completed sessions: {numberOfWorkSession}</p>
     </>
