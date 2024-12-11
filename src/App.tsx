@@ -1,5 +1,7 @@
+import Heading from "./components/Heading";
+
 function App() {
-  return <h1>pomodomoro</h1>;
+  return <Heading />;
 }
 
 export default App;
