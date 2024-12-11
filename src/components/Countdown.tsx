@@ -8,7 +8,7 @@ export default function Countdown({ secondsLeft }: CountdownProps) {
   const [minutes, setMinutes] = useState<number>(0);
   const [seconds, setSeconds] = useState<number>(0);
 
-  const formatTime = (timePart: number) =>
+  const formatTime = (timePart: number): string =>
     timePart < 10 ? `0${timePart.toString()}` : timePart.toString();
 
   useEffect(() => {
