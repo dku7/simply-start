@@ -3,9 +3,9 @@ import Countdown from "./Countdown";
 import TimerButton from "./TimerButton";
 
 export default function Timer() {
-  const [secondsLeft, setSecondsLeft] = useState(10);
-  const [countdownStarted, setCountdownStarted] = useState(false);
-  const intervalRef = useRef(-1);
+  const [secondsLeft, setSecondsLeft] = useState<number>(10);
+  const [countdownStarted, setCountdownStarted] = useState<boolean>(false);
+  const intervalRef = useRef<number>(-1);
 
   const handleStartCountdown = () => {
     setCountdownStarted(true);
