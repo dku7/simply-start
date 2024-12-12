@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef, useReducer } from "react";
+import { useState, useEffect, useRef, useReducer, useCallback } from "react";
 import useSound from "use-sound";
 import Time from "./Time";
-import TimerButton from "./TimerButton";
+import { TimerButton } from "./TimerButton";
 import defaultNotification from "../assets/default-notification.mp3";
 import { IntervalType, TimerType } from "../types/types";
 import { getIntervalSeconds } from "../utils/utils";
@@ -20,13 +20,13 @@ export default function Timer() {
   const [playNotification] = useSound(defaultNotification);
   const intervalRef = useRef<number>(-1);
 
-  const handleStart = () => {
+  const handleStart = useCallback(() => {
     dispatchTimer({ type: "START_TIMER" });
-  };
+  }, []);
 
-  const handleStop = () => {
+  const handleStop = useCallback(() => {
     dispatchTimer({ type: "STOP_TIMER" });
-  };
+  }, []);
 
   useEffect(() => {
     if (timer.started) {
