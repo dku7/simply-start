@@ -6,3 +6,7 @@ export function getIntervalSeconds(type: IntervalType): number {
 
   return seconds ? seconds : defaultIntervals[type];
 }
+
+export function saveIntervalSeconds(type: IntervalType, seconds: number) {
+  localStorage.setItem(type, seconds.toString());
+}
