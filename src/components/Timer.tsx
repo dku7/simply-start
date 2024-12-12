@@ -75,7 +75,7 @@ export default function Timer() {
         <Time seconds={timer.seconds} />
       </div>
       <progress
-        className="w-1/3 [&::-moz-progress-bar]:bg-slate-400 [&::-webkit-progress-bar]:rounded [&::-webkit-progress-bar]:bg-slate-400 [&::-webkit-progress-value]:rounded [&::-webkit-progress-value]:bg-slate-800"
+        className="w-3/4 md:w-1/3 [&::-moz-progress-bar]:bg-slate-400 [&::-webkit-progress-bar]:rounded [&::-webkit-progress-bar]:bg-slate-400 [&::-webkit-progress-value]:rounded [&::-webkit-progress-value]:bg-slate-800"
         max={getIntervalSeconds(timer.intervalType)}
         value={timer.seconds}
       />
