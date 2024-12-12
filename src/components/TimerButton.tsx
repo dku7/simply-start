@@ -19,7 +19,7 @@ export const TimerButton = memo(function TimerButton({
   return (
     <button
       onClick={handleClick}
-      className="mr-2 w-40 rounded border bg-slate-800 p-2 text-slate-100"
+      className="mr-2 w-40 rounded border bg-slate-800 p-2 text-slate-100 hover:bg-slate-600 hover:text-slate-50"
     >
       {buttonCaptions[status]}
     </button>
