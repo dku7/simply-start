@@ -71,7 +71,7 @@ export default function Timer() {
       <header>
         <h2 className="text-l font-bold">{timer.intervalType}</h2>
       </header>
-      <div className="text-8xl font-extrabold">
+      <div className="text-9xl font-extrabold">
         <Time seconds={timer.seconds} />
       </div>
       <progress

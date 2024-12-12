@@ -9,7 +9,8 @@ export default function Settings() {
       <header>
         <h2 className="mt-2 text-lg font-bold">Settings</h2>
       </header>
-      <div className="flex flex-wrap justify-center px-20 lg:flex-nowrap lg:justify-between lg:px-2">
+      <h3 className="mt-8 font-semibold">Intervals</h3>
+      <div className="flex flex-wrap justify-center px-20 lg:flex-nowrap lg:justify-between lg:px-6">
         {intervalTypes.map((type) => (
           <div key={type} className="">
             <IntervalSetting type={type} />
