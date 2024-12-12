@@ -4,6 +4,7 @@ import Time from "./Time";
 import TimerButton from "./TimerButton";
 import defaultNotification from "../assets/default-notification.mp3";
 import { IntervalType } from "../types/types";
+import { defaultIntervals } from "../constants/constants";
 
 export default function Timer() {
   const [secondsLeft, setSecondsLeft] = useState<number>(10);
@@ -52,27 +53,31 @@ export default function Timer() {
 
         if (updatedSessionCount % 4 === 0) {
           setIntervalType("Long Break");
-          const nextSeconds = Number(localStorage.getItem("Long Break"));
-          setSecondsLeft(nextSeconds);
         } else {
           setIntervalType("Short Break");
-          const nextSeconds = Number(localStorage.getItem("Short Break"));
-          setSecondsLeft(nextSeconds);
         }
       } else {
         setIntervalType("Work");
-        const nextSeconds = Number(localStorage.getItem("Work"));
-        setSecondsLeft(nextSeconds);
       }
     }
   }, [
     countdownStarted,
+    intervalType,
     numberOfWorkSession,
     playNotification,
     secondsLeft,
-    intervalType,
     soundsEnabled,
   ]);
+
+  useEffect(() => {
+    let savedInterval = Number(localStorage.getItem(intervalType));
+
+    if (!savedInterval) {
+      savedInterval = defaultIntervals[intervalType];
+
+      setSecondsLeft(savedInterval);
+    }
+  }, [intervalType]);
 
   return (
     <>
