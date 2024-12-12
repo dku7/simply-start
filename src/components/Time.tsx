@@ -1,27 +1,26 @@
 import { useState, useEffect } from "react";
+import { TimePartsType } from "../types/types";
 
 interface TimeProps {
   seconds: number;
 }
 
 export default function Time({ seconds }: TimeProps) {
-  const [min, setMinutes] = useState<number>(0);
-  const [sec, setSeconds] = useState<number>(0);
+  const [parts, setParts] = useState<TimePartsType>({ min: 0, sec: 0 });
 
-  const formatTime = (timePart: number): string =>
-    timePart < 10 ? `0${timePart.toString()}` : timePart.toString();
+  const formatTime = (part: number): string =>
+    part < 10 ? `0${part.toString()}` : part.toString();
 
   useEffect(() => {
     const min = Math.floor(seconds / 60);
     const sec = seconds - min * 60;
 
-    setMinutes(min);
-    setSeconds(sec);
+    setParts({ min, sec });
   }, [seconds]);
 
   return (
     <>
-      <span>{formatTime(min)}</span>:<span>{formatTime(sec)}</span>
+      <span>{formatTime(parts.min)}</span>:<span>{formatTime(parts.sec)}</span>
     </>
   );
 }

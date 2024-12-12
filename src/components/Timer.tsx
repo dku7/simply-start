@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import useSound from "use-sound";
-import Countdown from "./Countdown";
+import Time from "./Time";
 import TimerButton from "./TimerButton";
 import defaultNotification from "../assets/default-notification.mp3";
 import { IntervalType } from "../types/types";
@@ -79,7 +79,9 @@ export default function Timer() {
       <header>
         <h2 className="text-l font-bold">{intervalType}</h2>
       </header>
-      <Countdown secondsLeft={secondsLeft} />
+      <div className="text-8xl font-extrabold">
+        <Time seconds={secondsLeft} />
+      </div>
       <div className="my-4">
         <TimerButton title={"Start"} handleCountdown={handleStartCountdown} />
         <TimerButton title={"Stop"} handleCountdown={handleStopCountdown} />
