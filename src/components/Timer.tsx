@@ -9,7 +9,7 @@ import { timerReducer } from "../reducers/timer-reducer";
 
 const initialTimer: TimerType = {
   seconds: 0,
-  intervalType: "Work",
+  intervalType: "Focus",
   sessions: 0,
   status: "Not Started",
 };
@@ -49,13 +49,13 @@ export default function Timer() {
 
       if (soundsEnabled) playNotification();
 
-      if (timer.intervalType === "Work") {
+      if (timer.intervalType === "Focus") {
         const newSessions = timer.sessions + 1;
         dispatchTimer({ type: "UPDATE_SESSION_COUNT", payload: newSessions });
 
         if (newSessions % 4 === 0) newIntervalType = "Long Break";
         else newIntervalType = "Short Break";
-      } else newIntervalType = "Work";
+      } else newIntervalType = "Focus";
 
       dispatchTimer({ type: "SET_TYPE", payload: newIntervalType });
     }

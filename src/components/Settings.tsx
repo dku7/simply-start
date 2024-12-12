@@ -7,7 +7,7 @@ export default function Settings() {
         <h2 className="font-semibold">Settings</h2>
       </header>
       <div>
-        <IntervalSetting type={"Work"} />
+        <IntervalSetting type={"Focus"} />
         <IntervalSetting type={"Short Break"} />
         <IntervalSetting type={"Long Break"} />
       </div>
