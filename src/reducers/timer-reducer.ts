@@ -1,19 +1,23 @@
-import { IntervalType, TimerType } from "../types/types";
+import { IntervalType, TimerType, TimerStatusType } from "../types/types";
 
 type Action =
-  | { type: "START_TIMER" }
   | { type: "STOP_TIMER" }
   | { type: "SET_SECONDS"; payload: number }
   | { type: "SET_TYPE"; payload: IntervalType }
   | { type: "COUNTDOWN" }
-  | { type: "UPDATE_SESSION_COUNT"; payload: number };
+  | { type: "UPDATE_SESSION_COUNT"; payload: number }
+  | { type: "TOGGLE_STATUS" };
+
+const toggledStatuses: Record<TimerStatusType, TimerStatusType> = {
+  "Not Started": "Started",
+  Started: "Paused",
+  Paused: "Started",
+};
 
 export function timerReducer(state: TimerType, action: Action): TimerType {
   switch (action.type) {
-    case "START_TIMER":
-      return { ...state, started: true };
     case "STOP_TIMER":
-      return { ...state, started: false };
+      return { ...state, status: "Not Started" };
     case "SET_SECONDS":
       return { ...state, seconds: action.payload };
     case "SET_TYPE":
@@ -22,6 +26,8 @@ export function timerReducer(state: TimerType, action: Action): TimerType {
       return { ...state, seconds: state.seconds - 1 };
     case "UPDATE_SESSION_COUNT":
       return { ...state, sessions: action.payload };
+    case "TOGGLE_STATUS":
+      return { ...state, status: toggledStatuses[state.status] };
     default:
       return { ...state };
   }
