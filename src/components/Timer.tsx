@@ -3,7 +3,6 @@ import useSound from "use-sound";
 import Countdown from "./Countdown";
 import TimerButton from "./TimerButton";
 import defaultNotification from "../assets/default-notification.mp3";
-import { getSetting } from "../utils/settings";
 
 export default function Timer() {
   const [secondsLeft, setSecondsLeft] = useState<number>(10);
