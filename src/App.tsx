@@ -4,12 +4,12 @@ import Timer from "./components/Timer";
 
 export default function App() {
   return (
-    <div className="text-center">
+    <div className="p-4 text-center">
       <Heading />
       <div className="mt-10">
         <Timer />
       </div>
-      <div className="mt-4">
+      <div className="mt-4 flex justify-center">
         <Settings />
       </div>
     </div>
