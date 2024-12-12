@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import IntervalSettingButton from "./IntervalSettingButton";
 import Time from "./Time";
 import { IntervalType } from "../types/types";
-import { defaultIntervals } from "../constants/constants";
+import { getIntervalSeconds, saveIntervalSeconds } from "../utils/utils";
 
 interface IntervalSettingProps {
   type: IntervalType;
@@ -12,24 +12,21 @@ export default function IntervalSetting({ type }: IntervalSettingProps) {
   const [intervalSeconds, setIntervalSeconds] = useState<number>(0);
 
   useEffect(() => {
-    let savedSeconds = Number(localStorage.getItem(type));
-    if (!savedSeconds) savedSeconds = defaultIntervals[type];
-
-    setIntervalSeconds(savedSeconds);
+    setIntervalSeconds(getIntervalSeconds(type));
   }, [type]);
 
   const handleAddSeconds = () => {
     const seconds = intervalSeconds + 5;
 
     setIntervalSeconds(() => seconds);
-    localStorage.setItem(type, seconds.toString());
+    saveIntervalSeconds(type, seconds);
   };
 
   const handleMinusSeconds = () => {
     const seconds = intervalSeconds - 5;
 
     setIntervalSeconds((current) => (current === 0 ? current : seconds));
-    localStorage.setItem(type, seconds.toString());
+    saveIntervalSeconds(type, seconds);
   };
 
   return (
