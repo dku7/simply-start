@@ -1,9 +1,11 @@
+import { memo } from "react";
+
 interface TimerButtonProps {
   title: string;
   handleCountdown: () => void;
 }
 
-export default function TimerButton({
+export const TimerButton = memo(function TimerButton({
   title,
   handleCountdown,
 }: TimerButtonProps) {
@@ -12,4 +14,4 @@ export default function TimerButton({
       {title}
     </button>
   );
-}
+});
