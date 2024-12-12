@@ -4,5 +4,5 @@ import { defaultIntervals } from "../constants/constants";
 export function getIntervalSeconds(type: IntervalType): number {
   const seconds = Number(localStorage.getItem(type));
 
-  return seconds ? defaultIntervals[type] : seconds;
+  return seconds ? seconds : defaultIntervals[type];
 }
