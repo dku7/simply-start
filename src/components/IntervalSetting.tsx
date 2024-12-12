@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import IntervalSettingButton from "./IntervalSettingButton";
+import Time from "./Time";
 
 type IntervalType = "Work" | "Short Break" | "Long Break";
 
@@ -15,7 +16,6 @@ const defaultIntervals: Record<IntervalType, number> = {
 
 export default function IntervalSetting({ type }: IntervalSettingProps) {
   const [intervalSeconds, setIntervalSeconds] = useState<number>(0);
-  const [intervalString, setIntervalString] = useState<string>("");
 
   useEffect(() => {
     let savedSeconds = Number(localStorage.getItem(type));
@@ -23,16 +23,6 @@ export default function IntervalSetting({ type }: IntervalSettingProps) {
 
     setIntervalSeconds(savedSeconds);
   }, [type]);
-
-  useEffect(() => {
-    const formatTime = (timePart: number): string =>
-      timePart < 10 ? `0${timePart.toString()}` : timePart.toString();
-
-    const min = Math.floor(intervalSeconds / 60);
-    const sec = intervalSeconds - min * 60;
-
-    setIntervalString(formatTime(min) + ":" + formatTime(sec));
-  }, [intervalSeconds]);
 
   const handleAddSeconds = () => {
     const seconds = intervalSeconds + 5;
@@ -50,7 +40,7 @@ export default function IntervalSetting({ type }: IntervalSettingProps) {
 
   return (
     <div>
-      {type}: {intervalString}
+      {type}: <Time seconds={intervalSeconds} />
       <IntervalSettingButton type={"add"} handleClick={handleAddSeconds} />
       <IntervalSettingButton type={"minus"} handleClick={handleMinusSeconds} />
     </div>
