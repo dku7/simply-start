@@ -14,7 +14,7 @@ export default function IntervalSettingButton({
     type === "Add" ? <CiSquarePlus size={32} /> : <CiSquareMinus size={32} />;
 
   return (
-    <button className="m-0" onClick={handleClick}>
+    <button className="m-0" onClick={handleClick} aria-label={type}>
       {buttonType}
     </button>
   );
