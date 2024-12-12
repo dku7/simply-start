@@ -1,7 +1,8 @@
 import { CiSquarePlus, CiSquareMinus } from "react-icons/ci";
+import { SettingsButtonType } from "../types/types";
 
 interface IntervalSettingButtonProps {
-  type: string;
+  type: SettingsButtonType;
   handleClick: () => void;
 }
 
@@ -10,11 +11,7 @@ export default function IntervalSettingButton({
   handleClick,
 }: IntervalSettingButtonProps) {
   const buttonType =
-    type === "add" ? (
-      <CiSquarePlus size={32} />
-    ) : type === "minus" ? (
-      <CiSquareMinus size={32} />
-    ) : null;
+    type === "Add" ? <CiSquarePlus size={32} /> : <CiSquareMinus size={32} />;
 
   return (
     <button className="m-0" onClick={handleClick}>

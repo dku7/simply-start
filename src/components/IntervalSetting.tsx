@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import IntervalSettingButton from "./IntervalSettingButton";
 import Time from "./Time";
-
-type IntervalType = "Work" | "Short Break" | "Long Break";
+import { IntervalType } from "../types/types";
 
 interface IntervalSettingProps {
   type: IntervalType;
@@ -41,8 +40,8 @@ export default function IntervalSetting({ type }: IntervalSettingProps) {
   return (
     <div>
       {type}: <Time seconds={intervalSeconds} />
-      <IntervalSettingButton type={"add"} handleClick={handleAddSeconds} />
-      <IntervalSettingButton type={"minus"} handleClick={handleMinusSeconds} />
+      <IntervalSettingButton type={"Add"} handleClick={handleAddSeconds} />
+      <IntervalSettingButton type={"Minus"} handleClick={handleMinusSeconds} />
     </div>
   );
 }
