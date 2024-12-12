@@ -30,10 +30,19 @@ export default function IntervalSetting({ type }: IntervalSettingProps) {
   };
 
   return (
-    <div>
-      {type}: <Time seconds={intervalSeconds} />
-      <IntervalSettingButton type={"Add"} handleClick={handleAddSeconds} />
-      <IntervalSettingButton type={"Minus"} handleClick={handleMinusSeconds} />
+    <div className="my-2">
+      <p className="font-semibold">{type}</p>
+      <div className="flex items-center justify-center">
+        <span>
+          <Time seconds={intervalSeconds} />
+        </span>
+
+        <IntervalSettingButton type={"Add"} handleClick={handleAddSeconds} />
+        <IntervalSettingButton
+          type={"Minus"}
+          handleClick={handleMinusSeconds}
+        />
+      </div>
     </div>
   );
 }
