@@ -3,11 +3,12 @@ import useSound from "use-sound";
 import Countdown from "./Countdown";
 import TimerButton from "./TimerButton";
 import defaultNotification from "../assets/default-notification.mp3";
+import { IntervalType } from "../types/types";
 
 export default function Timer() {
   const [secondsLeft, setSecondsLeft] = useState<number>(10);
   const [countdownStarted, setCountdownStarted] = useState<boolean>(false);
-  const [sessionType, setSessionType] = useState<string>("Work");
+  const [intervalType, setIntervalType] = useState<IntervalType>("Work");
   const [numberOfWorkSession, setNumberOfWorkSessions] = useState<number>(0);
   const [soundsEnabled, setSoundsEnabled] = useState<boolean>(true);
 
@@ -45,24 +46,21 @@ export default function Timer() {
 
       if (soundsEnabled) playNotification();
 
-      if (sessionType === "Work") {
+      if (intervalType === "Work") {
         const updatedSessionCount = numberOfWorkSession + 1;
         setNumberOfWorkSessions(updatedSessionCount);
 
         if (updatedSessionCount % 4 === 0) {
-          setSessionType("Long Break");
+          setIntervalType("Long Break");
           const nextSeconds = Number(localStorage.getItem("Long Break"));
           setSecondsLeft(nextSeconds);
         } else {
-          setSessionType("Short Break");
+          setIntervalType("Short Break");
           const nextSeconds = Number(localStorage.getItem("Short Break"));
           setSecondsLeft(nextSeconds);
         }
-      } else if (
-        sessionType === "Long Break" ||
-        sessionType === "Short Break"
-      ) {
-        setSessionType("Work");
+      } else {
+        setIntervalType("Work");
         const nextSeconds = Number(localStorage.getItem("Work"));
         setSecondsLeft(nextSeconds);
       }
@@ -72,14 +70,14 @@ export default function Timer() {
     numberOfWorkSession,
     playNotification,
     secondsLeft,
-    sessionType,
+    intervalType,
     soundsEnabled,
   ]);
 
   return (
     <>
       <header>
-        <h2 className="text-l font-bold">{sessionType}</h2>
+        <h2 className="text-l font-bold">{intervalType}</h2>
       </header>
       <Countdown secondsLeft={secondsLeft} />
       <div className="my-4">
