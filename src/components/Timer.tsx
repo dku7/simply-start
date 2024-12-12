@@ -1,83 +1,86 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useReducer } from "react";
 import useSound from "use-sound";
 import Time from "./Time";
 import TimerButton from "./TimerButton";
 import defaultNotification from "../assets/default-notification.mp3";
-import { IntervalType } from "../types/types";
+import { IntervalType, TimerType } from "../types/types";
 import { getIntervalSeconds } from "../utils/utils";
+import { timerReducer } from "../reducers/timer-reducer";
+
+const initialTimer: TimerType = {
+  seconds: 0,
+  started: false,
+  intervalType: "Work",
+  sessions: 0,
+};
 
 export default function Timer() {
-  const [secondsLeft, setSecondsLeft] = useState<number>(10);
-  const [countdownStarted, setCountdownStarted] = useState<boolean>(false);
-  const [intervalType, setIntervalType] = useState<IntervalType>("Work");
-  const [numberOfWorkSession, setNumberOfWorkSessions] = useState<number>(0);
+  const [timer, dispatchTimer] = useReducer(timerReducer, initialTimer);
   const [soundsEnabled, setSoundsEnabled] = useState<boolean>(true);
   const [playNotification] = useSound(defaultNotification);
   const intervalRef = useRef<number>(-1);
 
-  const handleStartCountdown = () => {
-    setCountdownStarted(true);
+  const handleStart = () => {
+    dispatchTimer({ type: "START_TIMER" });
   };
 
-  const handleStopCountdown = () => {
-    setCountdownStarted(false);
+  const handleStop = () => {
+    dispatchTimer({ type: "STOP_TIMER" });
   };
 
   useEffect(() => {
-    if (countdownStarted) {
+    if (timer.started) {
       intervalRef.current = setInterval(() => {
-        setSecondsLeft((current) => current - 1);
+        dispatchTimer({ type: "COUNTDOWN" });
       }, 1000);
     }
 
     return () => {
       clearInterval(intervalRef.current);
     };
-  }, [countdownStarted]);
+  }, [timer]);
 
   const handleSoundsEnabled = () => {
     setSoundsEnabled((enabled) => !enabled);
   };
 
   useEffect(() => {
-    if (!secondsLeft && countdownStarted) {
+    if (!timer.seconds && timer.started) {
+      let newIntervalType: IntervalType = timer.intervalType;
+
       clearInterval(intervalRef.current);
-      setCountdownStarted(false);
+      dispatchTimer({ type: "STOP_TIMER" });
 
       if (soundsEnabled) playNotification();
 
-      if (intervalType === "Work") {
-        const updatedSessionCount = numberOfWorkSession + 1;
-        setNumberOfWorkSessions(updatedSessionCount);
+      if (timer.intervalType === "Work") {
+        const newSessions = timer.sessions + 1;
+        dispatchTimer({ type: "UPDATE_SESSION_COUNT", payload: newSessions });
 
-        if (updatedSessionCount % 4 === 0) setIntervalType("Long Break");
-        else setIntervalType("Short Break");
-      } else setIntervalType("Work");
+        if (newSessions % 4 === 0) newIntervalType = "Long Break";
+        else newIntervalType = "Short Break";
+      } else newIntervalType = "Work";
+
+      dispatchTimer({ type: "SET_TYPE", payload: newIntervalType });
     }
-  }, [
-    countdownStarted,
-    intervalType,
-    numberOfWorkSession,
-    playNotification,
-    secondsLeft,
-    soundsEnabled,
-  ]);
+  }, [playNotification, soundsEnabled, timer]);
 
   useEffect(() => {
-    setSecondsLeft(getIntervalSeconds(intervalType));
-  }, [intervalType]);
+    const seconds = getIntervalSeconds(timer.intervalType);
+    dispatchTimer({ type: "SET_SECONDS", payload: seconds });
+  }, [timer.intervalType]);
 
   return (
     <>
       <header>
-        <h2 className="text-l font-bold">{intervalType}</h2>
+        <h2 className="text-l font-bold">{timer.intervalType}</h2>
       </header>
       <div className="text-8xl font-extrabold">
-        <Time seconds={secondsLeft} />
+        <Time seconds={timer.seconds} />
       </div>
       <div className="my-4">
-        <TimerButton title={"Start"} handleCountdown={handleStartCountdown} />
-        <TimerButton title={"Stop"} handleCountdown={handleStopCountdown} />
+        <TimerButton title={"Start"} handleCountdown={handleStart} />
+        <TimerButton title={"Stop"} handleCountdown={handleStop} />
       </div>
       <div className="mb-2">
         <input
@@ -91,7 +94,7 @@ export default function Timer() {
           enable sounds
         </label>
       </div>
-      <p>Completed sessions: {numberOfWorkSession}</p>
+      <p>Completed sessions: {timer.sessions}</p>
     </>
   );
 }
