@@ -3,6 +3,7 @@ import useSound from "use-sound";
 import Countdown from "./Countdown";
 import TimerButton from "./TimerButton";
 import defaultNotification from "../assets/default-notification.mp3";
+import { getSetting } from "../utils/settings";
 
 export default function Timer() {
   const [secondsLeft, setSecondsLeft] = useState<number>(10);
@@ -51,17 +52,20 @@ export default function Timer() {
 
         if (updatedSessionCount % 4 === 0) {
           setSessionType("Long Break");
-          setSecondsLeft(10);
+          const nextSeconds = Number(localStorage.getItem("Long Break"));
+          setSecondsLeft(nextSeconds);
         } else {
           setSessionType("Short Break");
-          setSecondsLeft(5);
+          const nextSeconds = Number(localStorage.getItem("Short Break"));
+          setSecondsLeft(nextSeconds);
         }
       } else if (
         sessionType === "Long Break" ||
         sessionType === "Short Break"
       ) {
         setSessionType("Work");
-        setSecondsLeft(10);
+        const nextSeconds = Number(localStorage.getItem("Work"));
+        setSecondsLeft(nextSeconds);
       }
     }
   }, [
