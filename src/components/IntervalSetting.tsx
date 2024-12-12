@@ -2,16 +2,11 @@ import { useEffect, useState } from "react";
 import IntervalSettingButton from "./IntervalSettingButton";
 import Time from "./Time";
 import { IntervalType } from "../types/types";
+import { defaultIntervals } from "../constants/constants";
 
 interface IntervalSettingProps {
   type: IntervalType;
 }
-
-const defaultIntervals: Record<IntervalType, number> = {
-  Work: 10,
-  "Short Break": 5,
-  "Long Break": 5,
-};
 
 export default function IntervalSetting({ type }: IntervalSettingProps) {
   const [intervalSeconds, setIntervalSeconds] = useState<number>(0);
