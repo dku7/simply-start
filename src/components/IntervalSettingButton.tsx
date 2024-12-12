@@ -16,5 +16,9 @@ export default function IntervalSettingButton({
       <CiSquareMinus size={32} />
     ) : null;
 
-  return <button onClick={handleClick}>{buttonType}</button>;
+  return (
+    <button className="m-0" onClick={handleClick}>
+      {buttonType}
+    </button>
+  );
 }

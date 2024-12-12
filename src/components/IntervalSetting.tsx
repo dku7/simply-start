@@ -1,26 +1,27 @@
 import { useEffect, useState } from "react";
 import IntervalSettingButton from "./IntervalSettingButton";
 
+type IntervalType = "Work" | "Short Break" | "Long Break";
+
 interface IntervalSettingProps {
-  type: string;
+  type: IntervalType;
 }
+
+const defaultIntervals: Record<IntervalType, number> = {
+  Work: 10,
+  "Short Break": 5,
+  "Long Break": 5,
+};
 
 export default function IntervalSetting({ type }: IntervalSettingProps) {
   const [intervalSeconds, setIntervalSeconds] = useState<number>(0);
   const [intervalString, setIntervalString] = useState<string>("");
 
   useEffect(() => {
-    switch (type) {
-      case "Work":
-        setIntervalSeconds(10);
-        break;
-      case "Short Break":
-        setIntervalSeconds(5);
-        break;
-      case "Long Break":
-        setIntervalSeconds(10);
-        break;
-    }
+    let savedSeconds = Number(localStorage.getItem(type));
+    if (!savedSeconds) savedSeconds = defaultIntervals[type];
+
+    setIntervalSeconds(savedSeconds);
   }, [type]);
 
   useEffect(() => {
@@ -34,10 +35,17 @@ export default function IntervalSetting({ type }: IntervalSettingProps) {
   }, [intervalSeconds]);
 
   const handleAddSeconds = () => {
-    setIntervalSeconds((current) => current + 5);
+    const seconds = intervalSeconds + 5;
+
+    setIntervalSeconds(() => seconds);
+    localStorage.setItem(type, seconds.toString());
   };
+
   const handleMinusSeconds = () => {
-    setIntervalSeconds((current) => (current === 0 ? current : current - 5));
+    const seconds = intervalSeconds - 5;
+
+    setIntervalSeconds((current) => (current === 0 ? current : seconds));
+    localStorage.setItem(type, seconds.toString());
   };
 
   return (
