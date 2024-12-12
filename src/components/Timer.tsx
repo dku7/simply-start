@@ -9,9 +9,9 @@ import { timerReducer } from "../reducers/timer-reducer";
 
 const initialTimer: TimerType = {
   seconds: 0,
-  started: false,
   intervalType: "Work",
   sessions: 0,
+  status: "Not Started",
 };
 
 export default function Timer() {
@@ -20,16 +20,12 @@ export default function Timer() {
   const [playNotification] = useSound(defaultNotification);
   const intervalRef = useRef<number>(-1);
 
-  const handleStart = useCallback(() => {
-    dispatchTimer({ type: "START_TIMER" });
-  }, []);
-
-  const handleStop = useCallback(() => {
-    dispatchTimer({ type: "STOP_TIMER" });
+  const handleClick = useCallback(() => {
+    dispatchTimer({ type: "TOGGLE_STATUS" });
   }, []);
 
   useEffect(() => {
-    if (timer.started) {
+    if (timer.status == "Started") {
       intervalRef.current = setInterval(() => {
         dispatchTimer({ type: "COUNTDOWN" });
       }, 1000);
@@ -45,7 +41,7 @@ export default function Timer() {
   };
 
   useEffect(() => {
-    if (!timer.seconds && timer.started) {
+    if (!timer.seconds && timer.status === "Started") {
       let newIntervalType: IntervalType = timer.intervalType;
 
       clearInterval(intervalRef.current);
@@ -79,8 +75,7 @@ export default function Timer() {
         <Time seconds={timer.seconds} />
       </div>
       <div className="my-4">
-        <TimerButton title={"Start"} handleCountdown={handleStart} />
-        <TimerButton title={"Stop"} handleCountdown={handleStop} />
+        <TimerButton status={timer.status} handleClick={handleClick} />
       </div>
       <div className="mb-2">
         <input
