@@ -9,8 +9,6 @@ type Action =
   | { type: "UPDATE_SESSION_COUNT"; payload: number };
 
 export function timerReducer(state: TimerType, action: Action): TimerType {
-  console.log("reducing... action is: ", JSON.stringify(action));
-
   switch (action.type) {
     case "START_TIMER":
       return { ...state, started: true };
