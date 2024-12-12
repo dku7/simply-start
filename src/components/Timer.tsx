@@ -4,7 +4,7 @@ import Time from "./Time";
 import TimerButton from "./TimerButton";
 import defaultNotification from "../assets/default-notification.mp3";
 import { IntervalType } from "../types/types";
-import { defaultIntervals } from "../constants/constants";
+import { getIntervalSeconds } from "../utils/utils";
 
 export default function Timer() {
   const [secondsLeft, setSecondsLeft] = useState<number>(10);
@@ -12,7 +12,7 @@ export default function Timer() {
   const [intervalType, setIntervalType] = useState<IntervalType>("Work");
   const [numberOfWorkSession, setNumberOfWorkSessions] = useState<number>(0);
   const [soundsEnabled, setSoundsEnabled] = useState<boolean>(true);
-
+  const [playNotification] = useSound(defaultNotification);
   const intervalRef = useRef<number>(-1);
 
   const handleStartCountdown = () => {
@@ -35,7 +35,6 @@ export default function Timer() {
     };
   }, [countdownStarted]);
 
-  const [playNotification] = useSound(defaultNotification);
   const handleSoundsEnabled = () => {
     setSoundsEnabled((enabled) => !enabled);
   };
@@ -51,14 +50,9 @@ export default function Timer() {
         const updatedSessionCount = numberOfWorkSession + 1;
         setNumberOfWorkSessions(updatedSessionCount);
 
-        if (updatedSessionCount % 4 === 0) {
-          setIntervalType("Long Break");
-        } else {
-          setIntervalType("Short Break");
-        }
-      } else {
-        setIntervalType("Work");
-      }
+        if (updatedSessionCount % 4 === 0) setIntervalType("Long Break");
+        else setIntervalType("Short Break");
+      } else setIntervalType("Work");
     }
   }, [
     countdownStarted,
@@ -70,13 +64,7 @@ export default function Timer() {
   ]);
 
   useEffect(() => {
-    let savedInterval = Number(localStorage.getItem(intervalType));
-
-    if (!savedInterval) {
-      savedInterval = defaultIntervals[intervalType];
-
-      setSecondsLeft(savedInterval);
-    }
+    setSecondsLeft(getIntervalSeconds(intervalType));
   }, [intervalType]);
 
   return (
