@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useReducer, useCallback } from "react";
 import useSound from "use-sound";
 import Time from "./Time";
 import { TimerButton } from "./TimerButton";
-import defaultNotification from "../assets/default-notification.mp3";
+import gong from "../assets/gong.mp3";
 import { IntervalType, TimerType } from "../types/types";
 import {
   getStoredSessions,
@@ -23,7 +23,7 @@ const initialTimer: TimerType = {
 export default function Timer() {
   const [timer, dispatchTimer] = useReducer(timerReducer, initialTimer);
   const [sessions, setSessions] = useState<number>(0);
-  const [playNotification] = useSound(defaultNotification);
+  const [playNotification] = useSound(gong);
   const intervalRef = useRef<number>(-1);
 
   const handleClick = useCallback(() => {
