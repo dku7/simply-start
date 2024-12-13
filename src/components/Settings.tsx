@@ -1,4 +1,4 @@
-import IntervalSettings from "./IntervalSettings";
+import DurationSettings from "./DurationSettings";
 import SoundSettings from "./SoundSettings";
 
 export default function Settings() {
@@ -8,7 +8,7 @@ export default function Settings() {
         <h2 className="mt-2 text-lg font-bold">Settings</h2>
       </header>
       <div>
-        <IntervalSettings />
+        <DurationSettings />
       </div>
       <div>
         <SoundSettings />
