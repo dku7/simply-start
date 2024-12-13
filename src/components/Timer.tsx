@@ -94,14 +94,14 @@ export default function Timer() {
   return (
     <>
       <header>
-        <h2 className="text-l font-bold">{timer.intervalType}</h2>
+        <h2 className="text-xl font-bold">{timer.intervalType}</h2>
       </header>
-      <div className="text-8xl font-extrabold md:text-9xl">
+      <div className="text-8xl font-extrabold text-slate-700 md:text-9xl">
         <Time seconds={timer.seconds} />
       </div>
       <div>
         <progress
-          className="w-80 [&::-moz-progress-bar]:bg-slate-400 [&::-webkit-progress-bar]:rounded [&::-webkit-progress-bar]:bg-slate-400 [&::-webkit-progress-value]:rounded [&::-webkit-progress-value]:bg-slate-800"
+          className="w-80 [&::-moz-progress-bar]:bg-slate-400 [&::-webkit-progress-bar]:rounded [&::-webkit-progress-bar]:bg-slate-400 [&::-webkit-progress-value]:rounded [&::-webkit-progress-value]:bg-slate-700"
           max={getIntervalSeconds(timer.intervalType)}
           value={timer.seconds}
         />
