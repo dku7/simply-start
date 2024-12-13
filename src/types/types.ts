@@ -10,6 +10,5 @@ export interface TimePartsType {
 export interface TimerType {
   seconds: number;
   intervalType: IntervalType;
-  sessions: number;
   status: TimerStatusType;
 }

@@ -5,7 +5,6 @@ type Action =
   | { type: "SET_SECONDS"; payload: number }
   | { type: "SET_TYPE"; payload: IntervalType }
   | { type: "COUNTDOWN" }
-  | { type: "UPDATE_SESSION_COUNT"; payload: number }
   | { type: "TOGGLE_STATUS" };
 
 const toggledStatuses: Record<TimerStatusType, TimerStatusType> = {
@@ -24,8 +23,6 @@ export function timerReducer(state: TimerType, action: Action): TimerType {
       return { ...state, intervalType: action.payload };
     case "COUNTDOWN":
       return { ...state, seconds: state.seconds - 1 };
-    case "UPDATE_SESSION_COUNT":
-      return { ...state, sessions: action.payload };
     case "TOGGLE_STATUS":
       return { ...state, status: toggledStatuses[state.status] };
     default:
