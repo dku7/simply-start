@@ -9,6 +9,15 @@ export function saveIntervalSeconds(type: IntervalType, seconds: number) {
   localStorage.setItem(type, seconds.toString());
 }
 
+export function resetAllIntervalSeconds() {
+  const allTypes: IntervalType[] = ["Focus", "Short Break", "Long Break"];
+
+  for (const type of allTypes) {
+    localStorage.removeItem(type);
+    saveIntervalSeconds(type, defaultIntervals[type]);
+  }
+}
+
 export function getStoredSessions(): number {
   return Number(localStorage.getItem("Sessions") ?? 0);
 }

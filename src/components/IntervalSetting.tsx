@@ -7,14 +7,18 @@ import { defaultIntervalChange } from "../constants/constants";
 
 interface IntervalSettingProps {
   type: IntervalType;
+  reloadFlag: number;
 }
 
-export default function IntervalSetting({ type }: IntervalSettingProps) {
+export default function IntervalSetting({
+  type,
+  reloadFlag,
+}: IntervalSettingProps) {
   const [intervalSeconds, setIntervalSeconds] = useState<number>(0);
 
   useEffect(() => {
     setIntervalSeconds(getIntervalSeconds(type));
-  }, [type]);
+  }, [type, reloadFlag]);
 
   const handleAddSeconds = () => {
     const seconds = intervalSeconds + defaultIntervalChange;
