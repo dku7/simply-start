@@ -3,12 +3,12 @@ import useSound from "use-sound";
 import Time from "./Time";
 import { TimerButton } from "./TimerButton";
 import gong from "../assets/gong.mp3";
-import { IntervalType, TimerType } from "../types/types";
+import { SegmentType, TimerType } from "../types/types";
 import {
-  getStoredSessions,
+  getStoredIntervals,
   getIntervalSeconds,
-  incrementStoredSessions,
-  resetStoredSessions,
+  incrementStoredIntervals,
+  resetStoredIntervals,
   getNotificationSettings,
 } from "../utils/utils";
 import { timerReducer } from "../reducers/timer-reducer";
@@ -16,46 +16,46 @@ import { ResetButton } from "./ResetButton";
 
 const initialTimer: TimerType = {
   seconds: 0,
-  intervalType: "Focus",
+  segmentType: "Focus",
   status: "Not Started",
 };
 
 export default function Timer() {
   const [timer, dispatchTimer] = useReducer(timerReducer, initialTimer);
-  const [sessions, setSessions] = useState<number>(0);
+  const [intervalsCompleted, setIntervalsCompleted] = useState<number>(0);
   const [playNotification] = useSound(gong);
   const intervalRef = useRef<number>(-1);
 
   const handleClick = useCallback(() => {
     if (timer.status === "Not Started") {
-      const secondsToUse = getIntervalSeconds(timer.intervalType);
+      const secondsToUse = getIntervalSeconds(timer.segmentType);
       dispatchTimer({ type: "SET_SECONDS", payload: secondsToUse });
     }
 
     dispatchTimer({ type: "TOGGLE_STATUS" });
-  }, [timer.intervalType, timer.status]);
+  }, [timer.segmentType, timer.status]);
 
-  const handleResetSessions = useCallback(() => {
-    resetStoredSessions();
-    setSessions(0);
+  const handleResetIntervals = useCallback(() => {
+    resetStoredIntervals();
+    setIntervalsCompleted(0);
   }, []);
 
-  const setNewIntervalType = useCallback(() => {
-    console.log("generating setNewIntervalType");
-    let newIntervalType: IntervalType = timer.intervalType;
-    if (timer.intervalType === "Focus") {
-      const newSessions = incrementStoredSessions();
-      setSessions(newSessions);
+  const setNewSegmentType = useCallback(() => {
+    let newSegmentType: SegmentType = timer.segmentType;
+    if (timer.segmentType === "Focus") {
+      const newIntervals = incrementStoredIntervals();
 
-      if (newSessions % 4 === 0) newIntervalType = "Long Break";
-      else newIntervalType = "Short Break";
-    } else newIntervalType = "Focus";
+      setIntervalsCompleted(newIntervals);
 
-    dispatchTimer({ type: "SET_TYPE", payload: newIntervalType });
-  }, [timer.intervalType]);
+      if (newIntervals % 4 === 0) newSegmentType = "Long Break";
+      else newSegmentType = "Short Break";
+    } else newSegmentType = "Focus";
+
+    dispatchTimer({ type: "SET_TYPE", payload: newSegmentType });
+  }, [timer.segmentType]);
 
   useEffect(() => {
-    setSessions(getStoredSessions());
+    setIntervalsCompleted(getStoredIntervals());
   }, []);
 
   // start countdown
@@ -80,21 +80,21 @@ export default function Timer() {
 
       if (notificationEnabled) playNotification();
 
-      setNewIntervalType();
+      setNewSegmentType();
     }
-  }, [playNotification, setNewIntervalType, timer.seconds, timer.status]);
+  }, [playNotification, setNewSegmentType, timer.seconds, timer.status]);
 
-  // set new interval length when switch session types
+  // set new interval length when switch types
   useEffect(() => {
-    const seconds = getIntervalSeconds(timer.intervalType);
+    const seconds = getIntervalSeconds(timer.segmentType);
 
     dispatchTimer({ type: "SET_SECONDS", payload: seconds });
-  }, [timer.intervalType]);
+  }, [timer.segmentType]);
 
   return (
     <>
       <header>
-        <h2 className="text-xl font-bold">{timer.intervalType}</h2>
+        <h2 className="text-xl font-bold">{timer.segmentType}</h2>
       </header>
       <div className="text-8xl font-extrabold text-slate-700 md:text-9xl">
         <Time seconds={timer.seconds} />
@@ -102,7 +102,7 @@ export default function Timer() {
       <div>
         <progress
           className="w-80 [&::-moz-progress-bar]:bg-slate-400 [&::-webkit-progress-bar]:rounded [&::-webkit-progress-bar]:bg-slate-400 [&::-webkit-progress-value]:rounded [&::-webkit-progress-value]:bg-slate-700"
-          max={getIntervalSeconds(timer.intervalType)}
+          max={getIntervalSeconds(timer.segmentType)}
           value={timer.seconds}
         />
       </div>
@@ -110,11 +110,11 @@ export default function Timer() {
         <TimerButton status={timer.status} handleClick={handleClick} />
       </div>
       <div className="flex items-center justify-center">
-        <span className="mr-4">Completed sessions: {sessions}</span>
+        <span className="mr-4">Completed intervals: {intervalsCompleted}</span>
         <ResetButton
-          buttonTitle={"Reset completed sessions"}
+          buttonTitle={"Reset completed intervals"}
           iconOnly={true}
-          handleClick={handleResetSessions}
+          handleClick={handleResetIntervals}
         />
       </div>
     </>

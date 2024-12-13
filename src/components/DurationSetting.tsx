@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import IntervalSettingButton from "./IntervalSettingButton";
+import DurationSettingButton from "./DurationSettingButton";
 import Time from "./Time";
-import { IntervalType } from "../types/types";
+import { SegmentType } from "../types/types";
 import { getIntervalSeconds, saveIntervalSeconds } from "../utils/utils";
 import { defaultIntervalChange } from "../constants/constants";
 
 interface IntervalSettingProps {
-  type: IntervalType;
+  type: SegmentType;
   reloadFlag: number;
 }
 
@@ -46,8 +46,8 @@ export default function IntervalSetting({
             <Time seconds={intervalSeconds} />
           </span>
 
-          <IntervalSettingButton type={"Add"} handleClick={handleAddSeconds} />
-          <IntervalSettingButton
+          <DurationSettingButton type={"Add"} handleClick={handleAddSeconds} />
+          <DurationSettingButton
             type={"Minus"}
             handleClick={handleMinusSeconds}
           />

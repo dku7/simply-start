@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { IntervalType } from "../types/types";
-import IntervalSetting from "./IntervalSetting";
+import { SegmentType } from "../types/types";
+import DurationSetting from "./DurationSetting";
 import { ResetButton } from "./ResetButton";
 import { resetAllIntervalSeconds } from "../utils/utils";
 
 export default function IntervalSettings() {
-  const intervalTypes: IntervalType[] = ["Focus", "Short Break", "Long Break"];
+  const segmentTypes: SegmentType[] = ["Focus", "Short Break", "Long Break"];
   const [reloadFlag, setReloadFlag] = useState<number>(0);
 
   const handleReset = () => {
@@ -16,11 +16,11 @@ export default function IntervalSettings() {
   return (
     <>
       <header>
-        <h3 className="mt-8 font-semibold">Intervals</h3>
+        <h3 className="mt-8 font-semibold">Durations</h3>
       </header>
       <div className="mb-4 flex flex-wrap justify-center px-20 lg:flex-nowrap lg:justify-between lg:px-6">
-        {intervalTypes.map((type) => (
-          <IntervalSetting key={type} type={type} reloadFlag={reloadFlag} />
+        {segmentTypes.map((type) => (
+          <DurationSetting key={type} type={type} reloadFlag={reloadFlag} />
         ))}
       </div>
       <ResetButton
