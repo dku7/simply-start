@@ -1,4 +1,5 @@
 import IntervalSettings from "./IntervalSettings";
+import SoundSettings from "./SoundSettings";
 
 export default function Settings() {
   return (
@@ -6,7 +7,12 @@ export default function Settings() {
       <header>
         <h2 className="mt-2 text-lg font-bold">Settings</h2>
       </header>
-      <IntervalSettings />
+      <div>
+        <IntervalSettings />
+      </div>
+      <div>
+        <SoundSettings />
+      </div>
     </div>
   );
 }
