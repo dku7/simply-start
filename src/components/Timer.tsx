@@ -22,6 +22,7 @@ const initialTimer: TimerType = {
 
 export default function Timer() {
   const [timer, dispatchTimer] = useReducer(timerReducer, initialTimer);
+  const [maxDuration, setMaxDuration] = useState<number>(0);
   const [intervalsCompleted, setIntervalsCompleted] = useState<number>(0);
   const [playNotification] = useSound(gong);
   const intervalRef = useRef<number>(-1);
@@ -29,6 +30,8 @@ export default function Timer() {
   const handleClick = useCallback(() => {
     if (timer.status === "Not Started") {
       const duration = getSegmentDuration(timer.segmentType);
+
+      setMaxDuration(duration);
       dispatchTimer({ type: "SET_DURATION", payload: duration });
     }
 
@@ -88,6 +91,7 @@ export default function Timer() {
   useEffect(() => {
     const duration = getSegmentDuration(timer.segmentType);
 
+    setMaxDuration(duration);
     dispatchTimer({ type: "SET_DURATION", payload: duration });
   }, [timer.segmentType]);
 
@@ -102,7 +106,7 @@ export default function Timer() {
       <div>
         <progress
           className="w-80 [&::-moz-progress-bar]:bg-slate-400 [&::-webkit-progress-bar]:rounded [&::-webkit-progress-bar]:bg-slate-400 [&::-webkit-progress-value]:rounded [&::-webkit-progress-value]:bg-slate-700"
-          max={getSegmentDuration(timer.segmentType)}
+          max={maxDuration}
           value={timer.duration}
         />
       </div>
