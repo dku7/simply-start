@@ -38,15 +38,17 @@ export default function IntervalSetting({
     <div className="my-2">
       <p className="font-semibold">{type}</p>
       <div className="flex items-center justify-center">
-        <span>
-          <Time seconds={intervalSeconds} />
-        </span>
+        <div className="mr-4 flex items-center md:mr-10">
+          <span>
+            <Time seconds={intervalSeconds} />
+          </span>
 
-        <IntervalSettingButton type={"Add"} handleClick={handleAddSeconds} />
-        <IntervalSettingButton
-          type={"Minus"}
-          handleClick={handleMinusSeconds}
-        />
+          <IntervalSettingButton type={"Add"} handleClick={handleAddSeconds} />
+          <IntervalSettingButton
+            type={"Minus"}
+            handleClick={handleMinusSeconds}
+          />
+        </div>
       </div>
     </div>
   );
