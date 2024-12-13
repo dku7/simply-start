@@ -3,6 +3,7 @@ import IntervalSettingButton from "./IntervalSettingButton";
 import Time from "./Time";
 import { IntervalType } from "../types/types";
 import { getIntervalSeconds, saveIntervalSeconds } from "../utils/utils";
+import { defaultIntervalChange } from "../constants/constants";
 
 interface IntervalSettingProps {
   type: IntervalType;
@@ -16,14 +17,14 @@ export default function IntervalSetting({ type }: IntervalSettingProps) {
   }, [type]);
 
   const handleAddSeconds = () => {
-    const seconds = intervalSeconds + 5;
+    const seconds = intervalSeconds + defaultIntervalChange;
 
     setIntervalSeconds(() => seconds);
     saveIntervalSeconds(type, seconds);
   };
 
   const handleMinusSeconds = () => {
-    const seconds = intervalSeconds - 5;
+    const seconds = intervalSeconds - defaultIntervalChange;
 
     setIntervalSeconds((current) => (current === 0 ? current : seconds));
     saveIntervalSeconds(type, seconds);

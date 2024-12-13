@@ -5,3 +5,5 @@ export const defaultIntervals: Record<IntervalType, number> = {
   "Short Break": 300,
   "Long Break": 900,
 };
+
+export const defaultIntervalChange = 300;
