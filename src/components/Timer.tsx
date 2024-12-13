@@ -74,11 +74,13 @@ export default function Timer() {
       <div className="text-9xl font-extrabold">
         <Time seconds={timer.seconds} />
       </div>
-      <progress
-        className="w-3/4 md:w-1/3 [&::-moz-progress-bar]:bg-slate-400 [&::-webkit-progress-bar]:rounded [&::-webkit-progress-bar]:bg-slate-400 [&::-webkit-progress-value]:rounded [&::-webkit-progress-value]:bg-slate-800"
-        max={getIntervalSeconds(timer.intervalType)}
-        value={timer.seconds}
-      />
+      <div>
+        <progress
+          className="w-96 [&::-moz-progress-bar]:bg-slate-400 [&::-webkit-progress-bar]:rounded [&::-webkit-progress-bar]:bg-slate-400 [&::-webkit-progress-value]:rounded [&::-webkit-progress-value]:bg-slate-800"
+          max={getIntervalSeconds(timer.intervalType)}
+          value={timer.seconds}
+        />
+      </div>
       <div className="my-4">
         <TimerButton status={timer.status} handleClick={handleClick} />
       </div>
