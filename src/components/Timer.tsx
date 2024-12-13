@@ -11,7 +11,7 @@ import {
   resetStoredSessions,
 } from "../utils/utils";
 import { timerReducer } from "../reducers/timer-reducer";
-import ResetSessionsButton from "./ResetSessionsButton";
+import { ResetSessionsButton } from "./ResetSessionsButton";
 
 const initialTimer: TimerType = {
   seconds: 0,
@@ -35,10 +35,10 @@ export default function Timer() {
     dispatchTimer({ type: "TOGGLE_STATUS" });
   }, [timer.intervalType, timer.status]);
 
-  const handleResetSessions = () => {
+  const handleResetSessions = useCallback(() => {
     resetStoredSessions();
     setSessions(0);
-  };
+  }, []);
 
   const handleSoundsEnabled = () => {
     setSoundsEnabled((enabled) => !enabled);
