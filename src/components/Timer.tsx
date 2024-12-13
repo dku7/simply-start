@@ -5,11 +5,13 @@ import { TimerButton } from "./TimerButton";
 import defaultNotification from "../assets/default-notification.mp3";
 import { IntervalType, TimerType } from "../types/types";
 import {
-  getCompletedSessions,
+  getStoredSessions,
   getIntervalSeconds,
-  incrementCompletedSessions,
+  incrementStoredSessions,
+  resetStoredSessions,
 } from "../utils/utils";
 import { timerReducer } from "../reducers/timer-reducer";
+import ResetSessionsButton from "./ResetSessionsButton";
 
 const initialTimer: TimerType = {
   seconds: 0,
@@ -33,12 +35,17 @@ export default function Timer() {
     dispatchTimer({ type: "TOGGLE_STATUS" });
   }, [timer.intervalType, timer.status]);
 
+  const handleResetSessions = () => {
+    resetStoredSessions();
+    setSessions(0);
+  };
+
   const handleSoundsEnabled = () => {
     setSoundsEnabled((enabled) => !enabled);
   };
 
   useEffect(() => {
-    setSessions(getCompletedSessions());
+    setSessions(getStoredSessions());
   }, []);
 
   // start countdown
@@ -65,7 +72,7 @@ export default function Timer() {
       if (soundsEnabled) playNotification();
 
       if (timer.intervalType === "Focus") {
-        const newSessions = incrementCompletedSessions();
+        const newSessions = incrementStoredSessions();
         setSessions(newSessions);
 
         if (newSessions % 4 === 0) newIntervalType = "Long Break";
@@ -112,7 +119,10 @@ export default function Timer() {
           enable sounds
         </label>
       </div>
-      <p>Completed focus sessions: {sessions}</p>
+      <div className="flex items-center justify-center">
+        <span className="mr-4">Completed sessions: {sessions}</span>
+        <ResetSessionsButton handleClick={handleResetSessions} />
+      </div>
     </>
   );
 }
