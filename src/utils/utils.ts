@@ -13,6 +13,10 @@ export function getCompletedSessions(): number {
   return Number(localStorage.getItem("Sessions") ?? 0);
 }
 
-export function saveCompletedSessions(sessions: number) {
-  localStorage.setItem("Sessions", sessions.toString());
+export function incrementCompletedSessions(): number {
+  const newSessions = getCompletedSessions() + 1;
+
+  localStorage.setItem("Sessions", newSessions.toString());
+
+  return newSessions;
 }
