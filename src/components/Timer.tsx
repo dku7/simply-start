@@ -11,7 +11,7 @@ import {
   resetStoredSessions,
 } from "../utils/utils";
 import { timerReducer } from "../reducers/timer-reducer";
-import { ResetSessionsButton } from "./ResetSessionsButton";
+import { ResetButton } from "./ResetButton";
 
 const initialTimer: TimerType = {
   seconds: 0,
@@ -121,7 +121,11 @@ export default function Timer() {
       </div>
       <div className="flex items-center justify-center">
         <span className="mr-4">Completed sessions: {sessions}</span>
-        <ResetSessionsButton handleClick={handleResetSessions} />
+        <ResetButton
+          buttonTitle={"Reset completed sessions"}
+          iconOnly={true}
+          handleClick={handleResetSessions}
+        />
       </div>
     </>
   );
