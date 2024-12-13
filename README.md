@@ -6,10 +6,10 @@ Features:
 
 - Enables user to start, pause, and resume the timer
 - Plays a sound on completion
-- Keeps track of completed focus sessions
-- Allows user to specify the interval length for focus sessions, short breaks, and long break. These default to 25, 5, and 15 minutes respectively.
+- Keeps track of completed focus intervals
+- Allows user to specify the length for focus intervals, short breaks, and long break. These default to 25, 5, and 15 minutes respectively.
 - Displays a progress bar
-- Allows user to reset completed focus sessions
+- Allows user to reset completed focus intervals
 
 ## Installation
 

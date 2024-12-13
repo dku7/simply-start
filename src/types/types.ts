@@ -1,5 +1,5 @@
 export type IntervalType = "Focus" | "Short Break" | "Long Break";
-export type SettingsKeyType = "Sessions" | "Notifications" | `${IntervalType}`;
+export type SettingsKeyType = "Intervals" | "Notifications" | `${IntervalType}`;
 export type SettingsButtonType = "Add" | "Minus";
 export type TimerStatusType = "Not Started" | "Started" | "Paused";
 

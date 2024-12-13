@@ -5,10 +5,10 @@ import { TimerButton } from "./TimerButton";
 import gong from "../assets/gong.mp3";
 import { IntervalType, TimerType } from "../types/types";
 import {
-  getStoredSessions,
+  getStoredIntervals,
   getIntervalSeconds,
-  incrementStoredSessions,
-  resetStoredSessions,
+  incrementStoredIntervals,
+  resetStoredIntervals,
   getNotificationSettings,
 } from "../utils/utils";
 import { timerReducer } from "../reducers/timer-reducer";
@@ -22,7 +22,7 @@ const initialTimer: TimerType = {
 
 export default function Timer() {
   const [timer, dispatchTimer] = useReducer(timerReducer, initialTimer);
-  const [sessions, setSessions] = useState<number>(0);
+  const [intervalsCompleted, setIntervalsCompleted] = useState<number>(0);
   const [playNotification] = useSound(gong);
   const intervalRef = useRef<number>(-1);
 
@@ -35,19 +35,20 @@ export default function Timer() {
     dispatchTimer({ type: "TOGGLE_STATUS" });
   }, [timer.intervalType, timer.status]);
 
-  const handleResetSessions = useCallback(() => {
-    resetStoredSessions();
-    setSessions(0);
+  const handleResetIntervals = useCallback(() => {
+    resetStoredIntervals();
+    setIntervalsCompleted(0);
   }, []);
 
   const setNewIntervalType = useCallback(() => {
     console.log("generating setNewIntervalType");
     let newIntervalType: IntervalType = timer.intervalType;
     if (timer.intervalType === "Focus") {
-      const newSessions = incrementStoredSessions();
-      setSessions(newSessions);
+      const newIntervals = incrementStoredIntervals();
 
-      if (newSessions % 4 === 0) newIntervalType = "Long Break";
+      setIntervalsCompleted(newIntervals);
+
+      if (newIntervals % 4 === 0) newIntervalType = "Long Break";
       else newIntervalType = "Short Break";
     } else newIntervalType = "Focus";
 
@@ -55,7 +56,7 @@ export default function Timer() {
   }, [timer.intervalType]);
 
   useEffect(() => {
-    setSessions(getStoredSessions());
+    setIntervalsCompleted(getStoredIntervals());
   }, []);
 
   // start countdown
@@ -84,7 +85,7 @@ export default function Timer() {
     }
   }, [playNotification, setNewIntervalType, timer.seconds, timer.status]);
 
-  // set new interval length when switch session types
+  // set new interval length when switch types
   useEffect(() => {
     const seconds = getIntervalSeconds(timer.intervalType);
 
@@ -110,11 +111,11 @@ export default function Timer() {
         <TimerButton status={timer.status} handleClick={handleClick} />
       </div>
       <div className="flex items-center justify-center">
-        <span className="mr-4">Completed sessions: {sessions}</span>
+        <span className="mr-4">Completed intervals: {intervalsCompleted}</span>
         <ResetButton
-          buttonTitle={"Reset completed sessions"}
+          buttonTitle={"Reset completed intervals"}
           iconOnly={true}
-          handleClick={handleResetSessions}
+          handleClick={handleResetIntervals}
         />
       </div>
     </>

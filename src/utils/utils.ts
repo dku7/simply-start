@@ -18,23 +18,23 @@ export function resetAllIntervalSeconds() {
   }
 }
 
-export function getStoredSessions(): number {
-  const key: SettingsKeyType = "Sessions";
+export function getStoredIntervals(): number {
+  const key: SettingsKeyType = "Intervals";
 
   return Number(localStorage.getItem(key) ?? 0);
 }
 
-export function incrementStoredSessions(): number {
-  const newSessions = getStoredSessions() + 1;
-  const key: SettingsKeyType = "Sessions";
+export function incrementStoredIntervals(): number {
+  const newIntervals = getStoredIntervals() + 1;
+  const key: SettingsKeyType = "Intervals";
 
-  localStorage.setItem(key, newSessions.toString());
+  localStorage.setItem(key, newIntervals.toString());
 
-  return newSessions;
+  return newIntervals;
 }
 
-export function resetStoredSessions() {
-  const key: SettingsKeyType = "Sessions";
+export function resetStoredIntervals() {
+  const key: SettingsKeyType = "Intervals";
 
   localStorage.removeItem(key);
 }
