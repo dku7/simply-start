@@ -12,7 +12,6 @@ export const ResetButton = memo(function ResetButton({
   iconOnly,
   handleClick,
 }: ResetButtonProps) {
-  console.log("rendering ", buttonTitle);
   return (
     <button
       aria-label={buttonTitle}
