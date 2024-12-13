@@ -19,7 +19,7 @@ export default function Settings() {
         <h2 className="mt-2 text-lg font-bold">Settings</h2>
       </header>
       <h3 className="mt-8 font-semibold">Intervals</h3>
-      <div className="flex flex-wrap justify-center px-20 lg:flex-nowrap lg:justify-between lg:px-6">
+      <div className="mb-4 flex flex-wrap justify-center px-20 lg:flex-nowrap lg:justify-between lg:px-6">
         {intervalTypes.map((type) => (
           <IntervalSetting key={type} type={type} reloadFlag={reloadFlag} />
         ))}
