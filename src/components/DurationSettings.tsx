@@ -2,14 +2,14 @@ import { useState } from "react";
 import { SegmentType } from "../types/types";
 import DurationSetting from "./DurationSetting";
 import { ResetButton } from "./ResetButton";
-import { resetAllIntervalSeconds } from "../utils/utils";
+import { resetAllSegmentSeconds } from "../utils/utils";
 
 export default function IntervalSettings() {
   const segmentTypes: SegmentType[] = ["Focus", "Short Break", "Long Break"];
   const [reloadFlag, setReloadFlag] = useState<number>(0);
 
   const handleReset = () => {
-    resetAllIntervalSeconds();
+    resetAllSegmentSeconds();
     setReloadFlag((current) => current + 1);
   };
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import DurationSettingButton from "./DurationSettingButton";
 import Time from "./Time";
 import { SegmentType } from "../types/types";
-import { getIntervalSeconds, saveIntervalSeconds } from "../utils/utils";
+import { getSegmentSeconds, saveSegmentSeconds } from "../utils/utils";
 import { defaultIntervalChange } from "../constants/constants";
 
 interface IntervalSettingProps {
@@ -17,14 +17,14 @@ export default function IntervalSetting({
   const [intervalSeconds, setIntervalSeconds] = useState<number>(0);
 
   useEffect(() => {
-    setIntervalSeconds(getIntervalSeconds(type));
+    setIntervalSeconds(getSegmentSeconds(type));
   }, [type, reloadFlag]);
 
   const handleAddSeconds = () => {
     const seconds = intervalSeconds + defaultIntervalChange;
 
     setIntervalSeconds(() => seconds);
-    saveIntervalSeconds(type, seconds);
+    saveSegmentSeconds(type, seconds);
   };
 
   const handleMinusSeconds = () => {
@@ -34,7 +34,7 @@ export default function IntervalSetting({
         : intervalSeconds - defaultIntervalChange;
 
     setIntervalSeconds((current) => (current === 0 ? current : seconds));
-    saveIntervalSeconds(type, seconds);
+    saveSegmentSeconds(type, seconds);
   };
 
   return (

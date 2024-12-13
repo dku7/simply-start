@@ -6,7 +6,7 @@ import gong from "../assets/gong.mp3";
 import { SegmentType, TimerType } from "../types/types";
 import {
   getStoredIntervals,
-  getIntervalSeconds,
+  getSegmentSeconds,
   incrementStoredIntervals,
   resetStoredIntervals,
   getNotificationSettings,
@@ -28,7 +28,7 @@ export default function Timer() {
 
   const handleClick = useCallback(() => {
     if (timer.status === "Not Started") {
-      const secondsToUse = getIntervalSeconds(timer.segmentType);
+      const secondsToUse = getSegmentSeconds(timer.segmentType);
       dispatchTimer({ type: "SET_SECONDS", payload: secondsToUse });
     }
 
@@ -86,7 +86,7 @@ export default function Timer() {
 
   // set new interval length when switch types
   useEffect(() => {
-    const seconds = getIntervalSeconds(timer.segmentType);
+    const seconds = getSegmentSeconds(timer.segmentType);
 
     dispatchTimer({ type: "SET_SECONDS", payload: seconds });
   }, [timer.segmentType]);
@@ -102,7 +102,7 @@ export default function Timer() {
       <div>
         <progress
           className="w-80 [&::-moz-progress-bar]:bg-slate-400 [&::-webkit-progress-bar]:rounded [&::-webkit-progress-bar]:bg-slate-400 [&::-webkit-progress-value]:rounded [&::-webkit-progress-value]:bg-slate-700"
-          max={getIntervalSeconds(timer.segmentType)}
+          max={getSegmentSeconds(timer.segmentType)}
           value={timer.seconds}
         />
       </div>
