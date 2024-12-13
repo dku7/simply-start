@@ -21,8 +21,14 @@ export default function Timer() {
   const intervalRef = useRef<number>(-1);
 
   const handleClick = useCallback(() => {
+    console.log("generating new callback...");
+    if (timer.status === "Not Started") {
+      const secondsToUse = getIntervalSeconds(timer.intervalType);
+      dispatchTimer({ type: "SET_SECONDS", payload: secondsToUse });
+    }
+
     dispatchTimer({ type: "TOGGLE_STATUS" });
-  }, []);
+  }, [timer.intervalType, timer.status]);
 
   useEffect(() => {
     if (timer.status == "Started") {
