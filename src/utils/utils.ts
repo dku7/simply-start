@@ -1,16 +1,16 @@
-import { IntervalType, SettingsKeyType } from "../types/types";
+import { SegmentType, SettingsKeyType } from "../types/types";
 import { defaultIntervals } from "../constants/constants";
 
-export function getIntervalSeconds(type: IntervalType): number {
+export function getIntervalSeconds(type: SegmentType): number {
   return Number(localStorage.getItem(type) ?? defaultIntervals[type]);
 }
 
-export function saveIntervalSeconds(type: IntervalType, seconds: number) {
+export function saveIntervalSeconds(type: SegmentType, seconds: number) {
   localStorage.setItem(type, seconds.toString());
 }
 
 export function resetAllIntervalSeconds() {
-  const allTypes: IntervalType[] = ["Focus", "Short Break", "Long Break"];
+  const allTypes: SegmentType[] = ["Focus", "Short Break", "Long Break"];
 
   for (const type of allTypes) {
     localStorage.removeItem(type);

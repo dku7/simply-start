@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import DurationSettingButton from "./DurationSettingButton";
 import Time from "./Time";
-import { IntervalType } from "../types/types";
+import { SegmentType } from "../types/types";
 import { getIntervalSeconds, saveIntervalSeconds } from "../utils/utils";
 import { defaultIntervalChange } from "../constants/constants";
 
 interface IntervalSettingProps {
-  type: IntervalType;
+  type: SegmentType;
   reloadFlag: number;
 }
 
