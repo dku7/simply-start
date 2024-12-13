@@ -9,6 +9,7 @@ import {
   getIntervalSeconds,
   incrementStoredSessions,
   resetStoredSessions,
+  getNotificationSettings,
 } from "../utils/utils";
 import { timerReducer } from "../reducers/timer-reducer";
 import { ResetButton } from "./ResetButton";
@@ -22,7 +23,6 @@ const initialTimer: TimerType = {
 export default function Timer() {
   const [timer, dispatchTimer] = useReducer(timerReducer, initialTimer);
   const [sessions, setSessions] = useState<number>(0);
-  const [soundsEnabled, setSoundsEnabled] = useState<boolean>(true);
   const [playNotification] = useSound(defaultNotification);
   const intervalRef = useRef<number>(-1);
 
@@ -40,9 +40,19 @@ export default function Timer() {
     setSessions(0);
   }, []);
 
-  const handleSoundsEnabled = () => {
-    setSoundsEnabled((enabled) => !enabled);
-  };
+  const setNewIntervalType = useCallback(() => {
+    console.log("generating setNewIntervalType");
+    let newIntervalType: IntervalType = timer.intervalType;
+    if (timer.intervalType === "Focus") {
+      const newSessions = incrementStoredSessions();
+      setSessions(newSessions);
+
+      if (newSessions % 4 === 0) newIntervalType = "Long Break";
+      else newIntervalType = "Short Break";
+    } else newIntervalType = "Focus";
+
+    dispatchTimer({ type: "SET_TYPE", payload: newIntervalType });
+  }, [timer.intervalType]);
 
   useEffect(() => {
     setSessions(getStoredSessions());
@@ -64,28 +74,20 @@ export default function Timer() {
   // detect countdown finished
   useEffect(() => {
     if (!timer.seconds && timer.status === "Started") {
-      let newIntervalType: IntervalType = timer.intervalType;
-
+      const notificationEnabled = getNotificationSettings();
       clearInterval(intervalRef.current);
       dispatchTimer({ type: "STOP_TIMER" });
 
-      if (soundsEnabled) playNotification();
+      if (notificationEnabled) playNotification();
 
-      if (timer.intervalType === "Focus") {
-        const newSessions = incrementStoredSessions();
-        setSessions(newSessions);
-
-        if (newSessions % 4 === 0) newIntervalType = "Long Break";
-        else newIntervalType = "Short Break";
-      } else newIntervalType = "Focus";
-
-      dispatchTimer({ type: "SET_TYPE", payload: newIntervalType });
+      setNewIntervalType();
     }
-  }, [playNotification, soundsEnabled, timer]);
+  }, [playNotification, setNewIntervalType, timer.seconds, timer.status]);
 
   // set new interval length when switch session types
   useEffect(() => {
     const seconds = getIntervalSeconds(timer.intervalType);
+
     dispatchTimer({ type: "SET_SECONDS", payload: seconds });
   }, [timer.intervalType]);
 
@@ -106,18 +108,6 @@ export default function Timer() {
       </div>
       <div className="my-4">
         <TimerButton status={timer.status} handleClick={handleClick} />
-      </div>
-      <div className="mb-2">
-        <input
-          type="checkbox"
-          name="enable-sounds"
-          id="enable-sounds"
-          checked={soundsEnabled}
-          onChange={handleSoundsEnabled}
-        />
-        <label className="ml-2" htmlFor="enable-sounds">
-          enable sounds
-        </label>
       </div>
       <div className="flex items-center justify-center">
         <span className="mr-4">Completed sessions: {sessions}</span>

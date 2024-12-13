@@ -1,4 +1,4 @@
-import { IntervalType } from "../types/types";
+import { IntervalType, SettingsKeyType } from "../types/types";
 import { defaultIntervals } from "../constants/constants";
 
 export function getIntervalSeconds(type: IntervalType): number {
@@ -19,17 +19,34 @@ export function resetAllIntervalSeconds() {
 }
 
 export function getStoredSessions(): number {
-  return Number(localStorage.getItem("Sessions") ?? 0);
+  const key: SettingsKeyType = "Sessions";
+
+  return Number(localStorage.getItem(key) ?? 0);
 }
 
 export function incrementStoredSessions(): number {
   const newSessions = getStoredSessions() + 1;
+  const key: SettingsKeyType = "Sessions";
 
-  localStorage.setItem("Sessions", newSessions.toString());
+  localStorage.setItem(key, newSessions.toString());
 
   return newSessions;
 }
 
 export function resetStoredSessions() {
-  localStorage.removeItem("Sessions");
+  const key: SettingsKeyType = "Sessions";
+
+  localStorage.removeItem(key);
+}
+
+export function getNotificationSettings(): boolean {
+  const key: SettingsKeyType = "Notifications";
+
+  return (localStorage.getItem(key) ?? "true") === "true" ? true : false;
+}
+
+export function saveNotificationSettings(enabled: boolean) {
+  const key: SettingsKeyType = "Notifications";
+
+  localStorage.setItem(key, enabled.toString());
 }
