@@ -28,7 +28,10 @@ export default function IntervalSetting({
   };
 
   const handleMinusSeconds = () => {
-    const seconds = intervalSeconds - defaultIntervalChange;
+    const seconds =
+      intervalSeconds <= defaultIntervalChange
+        ? defaultIntervalChange
+        : intervalSeconds - defaultIntervalChange;
 
     setIntervalSeconds((current) => (current === 0 ? current : seconds));
     saveIntervalSeconds(type, seconds);
