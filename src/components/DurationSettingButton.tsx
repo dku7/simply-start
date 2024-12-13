@@ -1,15 +1,15 @@
 import { CiSquarePlus, CiSquareMinus } from "react-icons/ci";
 import { SettingsButtonType } from "../types/types";
 
-interface IntervalSettingButtonProps {
+interface DurationSettingButtonProps {
   type: SettingsButtonType;
   handleClick: () => void;
 }
 
-export default function IntervalSettingButton({
+export default function DurationSettingButton({
   type,
   handleClick,
-}: IntervalSettingButtonProps) {
+}: DurationSettingButtonProps) {
   const buttonType =
     type === "Add" ? <CiSquarePlus size={32} /> : <CiSquareMinus size={32} />;
 

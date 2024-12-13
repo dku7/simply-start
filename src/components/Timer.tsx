@@ -6,7 +6,7 @@ import gong from "../assets/gong.mp3";
 import { SegmentType, TimerType } from "../types/types";
 import {
   getStoredIntervals,
-  getSegmentSeconds,
+  getSegmentDuration,
   incrementStoredIntervals,
   resetStoredIntervals,
   getNotificationSettings,
@@ -15,7 +15,7 @@ import { timerReducer } from "../reducers/timer-reducer";
 import { ResetButton } from "./ResetButton";
 
 const initialTimer: TimerType = {
-  seconds: 0,
+  duration: 0,
   segmentType: "Focus",
   status: "Not Started",
 };
@@ -28,8 +28,8 @@ export default function Timer() {
 
   const handleClick = useCallback(() => {
     if (timer.status === "Not Started") {
-      const secondsToUse = getSegmentSeconds(timer.segmentType);
-      dispatchTimer({ type: "SET_SECONDS", payload: secondsToUse });
+      const duration = getSegmentDuration(timer.segmentType);
+      dispatchTimer({ type: "SET_DURATION", payload: duration });
     }
 
     dispatchTimer({ type: "TOGGLE_STATUS" });
@@ -73,7 +73,7 @@ export default function Timer() {
 
   // detect countdown finished
   useEffect(() => {
-    if (!timer.seconds && timer.status === "Started") {
+    if (!timer.duration && timer.status === "Started") {
       const notificationEnabled = getNotificationSettings();
       clearInterval(intervalRef.current);
       dispatchTimer({ type: "STOP_TIMER" });
@@ -82,13 +82,13 @@ export default function Timer() {
 
       setNewSegmentType();
     }
-  }, [playNotification, setNewSegmentType, timer.seconds, timer.status]);
+  }, [playNotification, setNewSegmentType, timer.duration, timer.status]);
 
   // set new interval length when switch types
   useEffect(() => {
-    const seconds = getSegmentSeconds(timer.segmentType);
+    const duration = getSegmentDuration(timer.segmentType);
 
-    dispatchTimer({ type: "SET_SECONDS", payload: seconds });
+    dispatchTimer({ type: "SET_DURATION", payload: duration });
   }, [timer.segmentType]);
 
   return (
@@ -97,13 +97,13 @@ export default function Timer() {
         <h2 className="text-xl font-bold">{timer.segmentType}</h2>
       </header>
       <div className="text-8xl font-extrabold text-slate-700 md:text-9xl">
-        <Time seconds={timer.seconds} />
+        <Time duration={timer.duration} />
       </div>
       <div>
         <progress
           className="w-80 [&::-moz-progress-bar]:bg-slate-400 [&::-webkit-progress-bar]:rounded [&::-webkit-progress-bar]:bg-slate-400 [&::-webkit-progress-value]:rounded [&::-webkit-progress-value]:bg-slate-700"
-          max={getSegmentSeconds(timer.segmentType)}
-          value={timer.seconds}
+          max={getSegmentDuration(timer.segmentType)}
+          value={timer.duration}
         />
       </div>
       <div className="my-4">

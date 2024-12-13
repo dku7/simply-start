@@ -9,7 +9,7 @@ export interface TimePartsType {
 }
 
 export interface TimerType {
-  seconds: number;
+  duration: number;
   segmentType: SegmentType;
   status: TimerStatusType;
 }

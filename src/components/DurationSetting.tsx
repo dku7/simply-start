@@ -2,39 +2,39 @@ import { useEffect, useState } from "react";
 import DurationSettingButton from "./DurationSettingButton";
 import Time from "./Time";
 import { SegmentType } from "../types/types";
-import { getSegmentSeconds, saveSegmentSeconds } from "../utils/utils";
+import { getSegmentDuration, saveSegmentDuration } from "../utils/utils";
 import { defaultIntervalChange } from "../constants/constants";
 
-interface IntervalSettingProps {
+interface DurationSettingProps {
   type: SegmentType;
   reloadFlag: number;
 }
 
-export default function IntervalSetting({
+export default function DurationSetting({
   type,
   reloadFlag,
-}: IntervalSettingProps) {
-  const [intervalSeconds, setIntervalSeconds] = useState<number>(0);
+}: DurationSettingProps) {
+  const [duration, setDuration] = useState<number>(0);
 
   useEffect(() => {
-    setIntervalSeconds(getSegmentSeconds(type));
+    setDuration(getSegmentDuration(type));
   }, [type, reloadFlag]);
 
-  const handleAddSeconds = () => {
-    const seconds = intervalSeconds + defaultIntervalChange;
+  const handleIncreaseDuration = () => {
+    const newDuration = duration + defaultIntervalChange;
 
-    setIntervalSeconds(() => seconds);
-    saveSegmentSeconds(type, seconds);
+    setDuration(() => newDuration);
+    saveSegmentDuration(type, newDuration);
   };
 
-  const handleMinusSeconds = () => {
-    const seconds =
-      intervalSeconds <= defaultIntervalChange
+  const handleReduceDuration = () => {
+    const newDuration =
+      duration <= defaultIntervalChange
         ? defaultIntervalChange
-        : intervalSeconds - defaultIntervalChange;
+        : duration - defaultIntervalChange;
 
-    setIntervalSeconds((current) => (current === 0 ? current : seconds));
-    saveSegmentSeconds(type, seconds);
+    setDuration((current) => (current === 0 ? current : newDuration));
+    saveSegmentDuration(type, newDuration);
   };
 
   return (
@@ -43,13 +43,16 @@ export default function IntervalSetting({
       <div className="flex items-center justify-center">
         <div className="mr-4 flex items-center md:mr-10">
           <span>
-            <Time seconds={intervalSeconds} />
+            <Time duration={duration} />
           </span>
 
-          <DurationSettingButton type={"Add"} handleClick={handleAddSeconds} />
+          <DurationSettingButton
+            type={"Add"}
+            handleClick={handleIncreaseDuration}
+          />
           <DurationSettingButton
             type={"Minus"}
-            handleClick={handleMinusSeconds}
+            handleClick={handleReduceDuration}
           />
         </div>
       </div>
