@@ -9,14 +9,18 @@ export function saveIntervalSeconds(type: IntervalType, seconds: number) {
   localStorage.setItem(type, seconds.toString());
 }
 
-export function getCompletedSessions(): number {
+export function getStoredSessions(): number {
   return Number(localStorage.getItem("Sessions") ?? 0);
 }
 
-export function incrementCompletedSessions(): number {
-  const newSessions = getCompletedSessions() + 1;
+export function incrementStoredSessions(): number {
+  const newSessions = getStoredSessions() + 1;
 
   localStorage.setItem("Sessions", newSessions.toString());
 
   return newSessions;
+}
+
+export function resetStoredSessions() {
+  localStorage.removeItem("Sessions");
 }
