@@ -50,3 +50,21 @@ export function saveNotificationSettings(enabled: boolean) {
 
   localStorage.setItem(key, enabled.toString());
 }
+
+export function getIntention(): string {
+  const key: SettingsKeyType = "Intention";
+
+  return localStorage.getItem(key) ?? "";
+}
+
+export function saveIntention(intention: string) {
+  const key: SettingsKeyType = "Intention";
+
+  localStorage.setItem(key, intention);
+}
+
+export function removeIntention() {
+  const key: SettingsKeyType = "Intention";
+
+  localStorage.removeItem(key);
+}

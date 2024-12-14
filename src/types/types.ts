@@ -1,5 +1,9 @@
 export type SegmentType = "Focus" | "Short Break" | "Long Break";
-export type SettingsKeyType = "Intervals" | "Notifications" | `${SegmentType}`;
+export type SettingsKeyType =
+  | "Intervals"
+  | "Notifications"
+  | "Intention"
+  | `${SegmentType}`;
 export type SettingsButtonType = "Add" | "Minus";
 export type TimerStatusType = "Not Started" | "Started" | "Paused";
 
