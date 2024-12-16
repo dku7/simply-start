@@ -1,14 +1,21 @@
-import { useState } from "react";
-import { saveNotes } from "../services/api";
+import { useCallback, useEffect, useState } from "react";
+import { getNotes, saveNotes } from "../services/api";
 
 export default function Notes() {
   const [notes, setNotes] = useState<string>("");
 
-  const handleChangeNotes = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newNotes = event.target.value;
-    setNotes(newNotes);
-    saveNotes(newNotes);
-  };
+  const handleChangeNotes = useCallback(
+    (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const newNotes = event.target.value;
+      setNotes(newNotes);
+      saveNotes(newNotes);
+    },
+    [],
+  );
+
+  useEffect(() => {
+    setNotes(getNotes());
+  }, []);
 
   return (
     <>
