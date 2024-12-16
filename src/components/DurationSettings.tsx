@@ -2,7 +2,7 @@ import { useState } from "react";
 import { SegmentType } from "../types/types";
 import DurationSetting from "./DurationSetting";
 import { ResetButton } from "./ResetButton";
-import { resetAllSegmentDurations } from "../utils/utils";
+import { resetAllSegmentDurations } from "../services/api";
 
 export default function DurationSettings() {
   const segmentTypes: SegmentType[] = ["Focus", "Short Break", "Long Break"];

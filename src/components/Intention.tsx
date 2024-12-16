@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { MdClear } from "react-icons/md";
-import { getIntention, removeIntention, saveIntention } from "../utils/utils";
+import { getIntention, removeIntention, saveIntention } from "../services/api";
 
 export default function Intention() {
   const [intention, setIntention] = useState<string>("");

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import DurationSettingButton from "./DurationSettingButton";
 import Time from "./Time";
 import { SegmentType } from "../types/types";
-import { getSegmentDuration, saveSegmentDuration } from "../utils/utils";
+import { getSegmentDuration, saveSegmentDuration } from "../services/api";
 import { defaultIntervalChange } from "../constants/constants";
 
 interface DurationSettingProps {

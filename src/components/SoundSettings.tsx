@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {
   getNotificationSettings,
   saveNotificationSettings,
-} from "../utils/utils";
+} from "../services/api";
 
 export default function SoundSettings() {
   const [playNotifications, setPlayNotifications] = useState<boolean>(true);
