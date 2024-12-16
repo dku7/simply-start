@@ -1,12 +1,13 @@
 import { useState } from "react";
+import { saveNotes } from "../services/api";
 
 export default function Notes() {
   const [notes, setNotes] = useState<string>("");
 
   const handleChangeNotes = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newNotes = event.target.value;
-    console.log(event.target.value);
     setNotes(newNotes);
+    saveNotes(newNotes);
   };
 
   return (
