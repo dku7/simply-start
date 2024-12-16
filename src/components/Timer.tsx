@@ -10,7 +10,7 @@ import {
   incrementStoredIntervals,
   resetStoredIntervals,
   getNotificationSettings,
-} from "../utils/utils";
+} from "../services/api";
 import { timerReducer } from "../reducers/timer-reducer";
 import { ResetButton } from "./ResetButton";
 

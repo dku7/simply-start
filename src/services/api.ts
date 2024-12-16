@@ -68,3 +68,15 @@ export function removeIntention() {
 
   localStorage.removeItem(key);
 }
+
+export function saveNotes(notes: string) {
+  const key: SettingsKeyType = "Notes";
+
+  localStorage.setItem(key, notes);
+}
+
+export function getNotes(): string {
+  const key: SettingsKeyType = "Notes";
+
+  return localStorage.getItem(key) ?? "";
+}

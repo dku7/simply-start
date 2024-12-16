@@ -3,6 +3,7 @@ export type SettingsKeyType =
   | "Intervals"
   | "Notifications"
   | "Intention"
+  | "Notes"
   | `${SegmentType}`;
 export type SettingsButtonType = "Add" | "Minus";
 export type TimerStatusType = "Not Started" | "Started" | "Paused";
