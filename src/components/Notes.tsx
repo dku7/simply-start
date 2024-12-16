@@ -7,6 +7,7 @@ export default function Notes() {
   const handleChangeNotes = useCallback(
     (event: React.ChangeEvent<HTMLTextAreaElement>) => {
       const newNotes = event.target.value;
+
       setNotes(newNotes);
       saveNotes(newNotes);
     },
@@ -22,7 +23,7 @@ export default function Notes() {
       <textarea
         name="notes"
         id="notes"
-        className="h-96 w-full resize-none border border-slate-300 bg-slate-200 p-2 px-2 font-mono text-slate-600 focus:border-slate-400 focus:outline-none focus:ring-0"
+        className="h-96 w-full resize-none rounded border border-slate-300 bg-slate-200 p-2 px-2 font-mono text-slate-600 focus:border-slate-400 focus:outline-none focus:ring-0"
         value={notes}
         onChange={handleChangeNotes}
       ></textarea>

@@ -18,7 +18,7 @@ export default function DurationSettings() {
       <header>
         <h3 className="mt-8 font-semibold">Durations</h3>
       </header>
-      <div className="mb-4 flex flex-wrap justify-center px-20 lg:flex-nowrap lg:justify-between lg:px-6">
+      <div className="mb-4 flex flex-wrap justify-center px-2 lg:flex-nowrap lg:justify-between lg:px-6">
         {segmentTypes.map((type) => (
           <DurationSetting key={type} type={type} reloadFlag={reloadFlag} />
         ))}
