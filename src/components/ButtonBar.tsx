@@ -20,20 +20,24 @@ export default function ButtonBar() {
     setActiveTab(tab);
   };
 
+  const selectedClassName = "mr-2 border-b-2 border-slate-500";
+
   return (
     <>
       <div className="flex w-full justify-start">
         <button
-          className="mr-2 border-b-2 border-slate-500"
+          className={activeTab === "Notes" ? selectedClassName : "mr-2"}
+          value={"Notes"}
           onClick={() => {
             handleChangeTab("Notes");
           }}
         >
           Notes
         </button>
+
         <button
-          className="mr-2 border-b-2 border-slate-500"
-          value={"Notes"}
+          className={activeTab === "Settings" ? selectedClassName : "mr-2"}
+          value={"Settings"}
           onClick={() => {
             handleChangeTab("Settings");
           }}
