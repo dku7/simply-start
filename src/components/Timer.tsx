@@ -13,6 +13,7 @@ import {
 } from "../services/api";
 import { timerReducer } from "../reducers/timer-reducer";
 import { ResetButton } from "./ResetButton";
+import { SkipButton } from "./SkipButton";
 
 const initialTimer: TimerType = {
   duration: 0,
@@ -27,7 +28,7 @@ export default function Timer() {
   const [playNotification] = useSound(gong);
   const intervalRef = useRef<number>(-1);
 
-  const handleClick = useCallback(() => {
+  const handleTimer = useCallback(() => {
     if (timer.status === "Not Started") {
       const duration = getSegmentDuration(timer.segmentType);
 
@@ -43,19 +44,42 @@ export default function Timer() {
     setIntervalsCompleted(0);
   }, []);
 
-  const setNewSegmentType = useCallback(() => {
-    let newSegmentType: SegmentType = timer.segmentType;
-    if (timer.segmentType === "Focus") {
-      const newIntervals = incrementStoredIntervals();
+  const setNewSegmentType = useCallback(
+    (incCompleted: boolean) => {
+      let newSegmentType: SegmentType = timer.segmentType;
 
-      setIntervalsCompleted(newIntervals);
+      if (timer.segmentType === "Focus") {
+        const newIntervals = getStoredIntervals() + 1;
 
-      if (newIntervals % 4 === 0) newSegmentType = "Long Break";
-      else newSegmentType = "Short Break";
-    } else newSegmentType = "Focus";
+        if (incCompleted) {
+          incrementStoredIntervals();
+          setIntervalsCompleted(newIntervals);
+        }
 
-    dispatchTimer({ type: "SET_TYPE", payload: newSegmentType });
-  }, [timer.segmentType]);
+        if (newIntervals % 4 === 0) newSegmentType = "Long Break";
+        else newSegmentType = "Short Break";
+      } else newSegmentType = "Focus";
+
+      dispatchTimer({ type: "SET_TYPE", payload: newSegmentType });
+    },
+    [timer.segmentType],
+  );
+
+  const stopTimerAndClearInterval = useCallback(() => {
+    clearInterval(intervalRef.current);
+    dispatchTimer({ type: "STOP_TIMER" });
+  }, []);
+
+  const playTimerAlert = useCallback(() => {
+    const notificationEnabled = getNotificationSettings();
+
+    if (notificationEnabled) playNotification();
+  }, [playNotification]);
+
+  const handleSkip = useCallback(() => {
+    stopTimerAndClearInterval();
+    setNewSegmentType(false);
+  }, [stopTimerAndClearInterval, setNewSegmentType]);
 
   useEffect(() => {
     setIntervalsCompleted(getStoredIntervals());
@@ -77,15 +101,17 @@ export default function Timer() {
   // detect countdown finished
   useEffect(() => {
     if (!timer.duration && timer.status === "Started") {
-      const notificationEnabled = getNotificationSettings();
-      clearInterval(intervalRef.current);
-      dispatchTimer({ type: "STOP_TIMER" });
-
-      if (notificationEnabled) playNotification();
-
-      setNewSegmentType();
+      playTimerAlert();
+      stopTimerAndClearInterval();
+      setNewSegmentType(true);
     }
-  }, [playNotification, setNewSegmentType, timer.duration, timer.status]);
+  }, [
+    playTimerAlert,
+    timer.duration,
+    timer.status,
+    stopTimerAndClearInterval,
+    setNewSegmentType,
+  ]);
 
   // set new interval length when switch types
   useEffect(() => {
@@ -111,7 +137,8 @@ export default function Timer() {
         />
       </div>
       <div className="my-4">
-        <TimerButton status={timer.status} handleClick={handleClick} />
+        <TimerButton status={timer.status} handleTimer={handleTimer} />
+        <SkipButton handleSkip={handleSkip} />
       </div>
       <div className="flex items-center justify-center">
         <span className="mr-4">Completed intervals: {intervalsCompleted}</span>
