@@ -13,6 +13,7 @@ import {
 } from "../services/api";
 import { timerReducer } from "../reducers/timer-reducer";
 import { ResetButton } from "./ResetButton";
+import SkipButton from "./SkipButton";
 
 const initialTimer: TimerType = {
   duration: 0,
@@ -57,6 +58,22 @@ export default function Timer() {
     dispatchTimer({ type: "SET_TYPE", payload: newSegmentType });
   }, [timer.segmentType]);
 
+  const stopTimerAndChangeType = useCallback(() => {
+    clearInterval(intervalRef.current);
+    dispatchTimer({ type: "STOP_TIMER" });
+    setNewSegmentType();
+  }, [setNewSegmentType]);
+
+  const playTimerAlert = useCallback(() => {
+    const notificationEnabled = getNotificationSettings();
+
+    if (notificationEnabled) playNotification();
+  }, [playNotification]);
+
+  const handleSkip = useCallback(() => {
+    stopTimerAndChangeType();
+  }, [stopTimerAndChangeType]);
+
   useEffect(() => {
     setIntervalsCompleted(getStoredIntervals());
   }, []);
@@ -66,6 +83,7 @@ export default function Timer() {
     if (timer.status == "Started") {
       intervalRef.current = setInterval(() => {
         dispatchTimer({ type: "COUNTDOWN" });
+        console.log("counting...");
       }, 1000);
     }
 
@@ -77,15 +95,10 @@ export default function Timer() {
   // detect countdown finished
   useEffect(() => {
     if (!timer.duration && timer.status === "Started") {
-      const notificationEnabled = getNotificationSettings();
-      clearInterval(intervalRef.current);
-      dispatchTimer({ type: "STOP_TIMER" });
-
-      if (notificationEnabled) playNotification();
-
-      setNewSegmentType();
+      playTimerAlert();
+      stopTimerAndChangeType();
     }
-  }, [playNotification, setNewSegmentType, timer.duration, timer.status]);
+  }, [playTimerAlert, timer.duration, timer.status, stopTimerAndChangeType]);
 
   // set new interval length when switch types
   useEffect(() => {
@@ -112,6 +125,7 @@ export default function Timer() {
       </div>
       <div className="my-4">
         <TimerButton status={timer.status} handleClick={handleClick} />
+        <SkipButton />
       </div>
       <div className="flex items-center justify-center">
         <span className="mr-4">Completed intervals: {intervalsCompleted}</span>
