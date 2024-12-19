@@ -47,10 +47,14 @@ export default function Timer() {
   const setNewSegmentType = useCallback(
     (incCompleted: boolean) => {
       let newSegmentType: SegmentType = timer.segmentType;
-      if (timer.segmentType === "Focus") {
-        const newIntervals = incrementStoredIntervals();
 
-        if (incCompleted) setIntervalsCompleted(newIntervals);
+      if (timer.segmentType === "Focus") {
+        const newIntervals = getStoredIntervals() + 1;
+
+        if (incCompleted) {
+          incrementStoredIntervals();
+          setIntervalsCompleted(newIntervals);
+        }
 
         if (newIntervals % 4 === 0) newSegmentType = "Long Break";
         else newSegmentType = "Short Break";
@@ -61,7 +65,7 @@ export default function Timer() {
     [timer.segmentType],
   );
 
-  const stopTimerAndChangeType = useCallback(() => {
+  const stopTimerAndClearInterval = useCallback(() => {
     clearInterval(intervalRef.current);
     dispatchTimer({ type: "STOP_TIMER" });
   }, []);
@@ -73,9 +77,9 @@ export default function Timer() {
   }, [playNotification]);
 
   const handleSkip = useCallback(() => {
-    stopTimerAndChangeType();
+    stopTimerAndClearInterval();
     setNewSegmentType(false);
-  }, [stopTimerAndChangeType, setNewSegmentType]);
+  }, [stopTimerAndClearInterval, setNewSegmentType]);
 
   useEffect(() => {
     setIntervalsCompleted(getStoredIntervals());
@@ -98,14 +102,14 @@ export default function Timer() {
   useEffect(() => {
     if (!timer.duration && timer.status === "Started") {
       playTimerAlert();
-      stopTimerAndChangeType();
+      stopTimerAndClearInterval();
       setNewSegmentType(true);
     }
   }, [
     playTimerAlert,
     timer.duration,
     timer.status,
-    stopTimerAndChangeType,
+    stopTimerAndClearInterval,
     setNewSegmentType,
   ]);
 
