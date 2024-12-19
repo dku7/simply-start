@@ -6,16 +6,16 @@ interface TimerButtonProps {
   handleTimer: () => void;
 }
 
+const buttonCaptions: Record<TimerStatusType, string> = {
+  "Not Started": "Start",
+  Started: "Pause",
+  Paused: "Resume",
+};
+
 export const TimerButton = memo(function TimerButton({
   status,
   handleTimer,
 }: TimerButtonProps) {
-  const buttonCaptions: Record<TimerStatusType, string> = {
-    "Not Started": "Start",
-    Started: "Pause",
-    Paused: "Resume",
-  };
-
   return (
     <button
       onClick={handleTimer}
