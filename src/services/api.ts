@@ -9,9 +9,9 @@ export function saveSegmentDuration(type: SegmentType, duration: number) {
   localStorage.setItem(type, duration.toString());
 }
 
-export function resetAllSegmentDurations() {
-  const allTypes: SegmentType[] = ["Focus", "Short Break", "Long Break"];
+const allTypes: SegmentType[] = ["Focus", "Short Break", "Long Break"];
 
+export function resetAllSegmentDurations() {
   for (const type of allTypes) {
     localStorage.removeItem(type);
     saveSegmentDuration(type, defaultIntervals[type]);
