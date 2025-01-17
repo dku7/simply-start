@@ -23,7 +23,7 @@ export default function DurationSetting({
   const handleIncreaseDuration = () => {
     const newDuration = duration + defaultIntervalChange;
 
-    setDuration(() => newDuration);
+    setDuration(newDuration);
     saveSegmentDuration(type, newDuration);
   };
 
@@ -33,7 +33,9 @@ export default function DurationSetting({
         ? defaultIntervalChange
         : duration - defaultIntervalChange;
 
-    setDuration((current) => (current === 0 ? current : newDuration));
+    setDuration((current) =>
+      current <= defaultIntervalChange ? current : newDuration,
+    );
     saveSegmentDuration(type, newDuration);
   };
 
